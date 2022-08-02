@@ -1,6 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import {
     IsArray,
+    IsDateString,
     IsNotEmpty,
     IsNumberString,
     IsOptional,
@@ -9,21 +10,52 @@ import {
     ValidateNested
 } from 'class-validator';
 
-class Variants {
+class Color {
     @IsOptional()
     @IsNotEmpty()
     @IsString()
-    size: string;
+    name: string;
+}
+
+class Detail {
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    title: string;
+}
+
+class Information {
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    title: string;
 
     @IsOptional()
     @IsNotEmpty()
     @IsString()
-    color: string;
+    description: string;
+}
+
+class Review {
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsDateString()
+    date: string;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    comment: string;
 
     @IsOptional()
     @IsNotEmpty()
     @IsNumberString({ message: 'Variant stock must be a number' })
-    stock: number;
+    rating: number;
 }
 
 export class ProductUpdateDto {
@@ -39,28 +71,38 @@ export class ProductUpdateDto {
 
     @IsOptional()
     @IsNotEmpty()
+    @IsNumberString({ message: 'Product price must be a number' })
+    price: number;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product rating must be a number' })
+    rating: number;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product review count must be a number' })
+    reviewCount: number;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product quantity must be a number' })
+    qty: number;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    brand: string;
+
+    @IsOptional()
+    @IsNotEmpty()
     @IsString()
     category: string;
 
     @IsOptional()
     @IsNotEmpty()
-    @IsNumberString()
-    buyingPrice: number;
-
-    @IsOptional()
-    @IsNotEmpty()
-    @IsNumberString()
-    sellingPrice: number;
-
-    @IsOptional()
-    @IsNotEmpty()
-    @IsNumberString()
-    stock: number;
-
-    @IsOptional()
-    @IsNotEmpty()
     @IsString()
-    description: string;
+    imageAlt: string;
 
     @IsOptional()
     @IsNotEmpty()
@@ -77,6 +119,60 @@ export class ProductUpdateDto {
     )
     @IsArray()
     @ValidateNested({ each: true })
-    @Type(() => Variants)
-    variants: Variants[];
+    @Type(() => Color)
+    colors: Color[];
+
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Detail)
+    details: Detail[];
+
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Information)
+    informations: Information[];
+
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Review)
+    reviews: Review[];
 }
