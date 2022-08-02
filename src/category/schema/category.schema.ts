@@ -3,23 +3,21 @@ import { Document, SchemaTypes } from 'mongoose';
 
 export type CategoryDocument = Category & Document;
 
+class SubCategory {
+    @Prop({ type: SchemaTypes.String, required: [true, 'Category name is required'], unique: true })
+    name: string;
+}
+
 @Schema({ timestamps: true })
 export class Category {
     @Prop({ type: SchemaTypes.String, required: [true, 'Category name is required'], unique: true })
     name: string;
 
     @Prop({
-        type: [SchemaTypes.String],
+        type: [typeof SubCategory],
         default: [],
     })
-    subCategories: string[];
-
-    @Prop({
-        type: SchemaTypes.Number,
-        min: [0, 'Stock must be greater than 0'],
-        default: 0,
-    })
-    stock: number;
+    subCategories: SubCategory[];
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
