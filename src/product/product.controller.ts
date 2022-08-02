@@ -25,7 +25,7 @@ export class ProductController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @UseFilters(HttpExceptionFilter)
-    @UseInterceptors(FilesInterceptor('images', 5, imageUploadOptions))
+    @UseInterceptors(FilesInterceptor('images', 4, imageUploadOptions))
     create(
         @Body() dto: ProductDto,
         @UploadedFiles() images: Array<Express.Multer.File>

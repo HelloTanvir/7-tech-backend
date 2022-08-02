@@ -29,9 +29,6 @@ export class ProductService {
             throw new ForbiddenException('category does not exist');
         }
 
-        // increase category stock by product quantity
-        category.stock += dto.stock;
-
         // upload images
         const imagePaths: string[] = [];
         const keys: string[] = [];
@@ -77,10 +74,6 @@ export class ProductService {
             if (!category) {
                 throw new ForbiddenException('category does not exist');
             }
-
-            // update category stock by product quantity
-            category.stock -= product.stock;
-            category.stock += dto.stock;
 
             await category.save();
         }
