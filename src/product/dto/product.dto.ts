@@ -1,18 +1,52 @@
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumberString, IsString, ValidateNested } from 'class-validator';
+import {
+    IsArray,
+    IsDateString,
+    IsNotEmpty,
+    IsNumberString,
+    IsString,
+    // eslint-disable-next-line prettier/prettier
+    ValidateNested
+} from 'class-validator';
 
-class Variants {
+class Color {
     @IsNotEmpty()
     @IsString()
-    size: string;
+    name: string;
+}
+
+class Detail {
+    @IsNotEmpty()
+    @IsString()
+    title: string;
+}
+
+class Information {
+    @IsNotEmpty()
+    @IsString()
+    title: string;
 
     @IsNotEmpty()
     @IsString()
-    color: string;
+    description: string;
+}
+
+class Review {
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+
+    @IsNotEmpty()
+    @IsDateString()
+    date: string;
+
+    @IsNotEmpty()
+    @IsString()
+    comment: string;
 
     @IsNotEmpty()
     @IsNumberString({ message: 'Variant stock must be a number' })
-    stock: number;
+    rating: number;
 }
 
 export class ProductDto {
@@ -25,24 +59,32 @@ export class ProductDto {
     code: string;
 
     @IsNotEmpty()
+    @IsNumberString({ message: 'Product price must be a number' })
+    price: number;
+
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product rating must be a number' })
+    rating: number;
+
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product review count must be a number' })
+    reviewCount: number;
+
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product quantity must be a number' })
+    qty: number;
+
+    @IsNotEmpty()
+    @IsString()
+    brand: string;
+
+    @IsNotEmpty()
     @IsString()
     category: string;
 
     @IsNotEmpty()
-    @IsNumberString()
-    buyingPrice: number;
-
-    @IsNotEmpty()
-    @IsNumberString()
-    sellingPrice: number;
-
-    @IsNotEmpty()
-    @IsNumberString()
-    stock: number;
-
-    @IsNotEmpty()
     @IsString()
-    description: string;
+    imageAlt: string;
 
     @IsNotEmpty()
     @Transform(
@@ -58,6 +100,57 @@ export class ProductDto {
     )
     @IsArray()
     @ValidateNested({ each: true })
-    @Type(() => Variants)
-    variants: Variants[];
+    @Type(() => Color)
+    colors: Color[];
+
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Detail)
+    details: Detail[];
+
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Information)
+    informations: Information[];
+
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Review)
+    reviews: Review[];
 }
