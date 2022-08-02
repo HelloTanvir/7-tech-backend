@@ -1,4 +1,12 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+
+class SubCategory {
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+}
 
 export class CategoryDto {
     @IsNotEmpty()
@@ -7,6 +15,19 @@ export class CategoryDto {
 
     @IsOptional()
     @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
     @IsArray()
-    subCategories: string[];
+    @ValidateNested({ each: true })
+    @Type(() => SubCategory)
+    colors: SubCategory[];
 }
