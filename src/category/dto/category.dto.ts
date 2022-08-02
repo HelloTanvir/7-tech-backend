@@ -29,5 +29,5 @@ export class CategoryDto {
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => SubCategory)
-    colors: SubCategory[];
+    subCategories: SubCategory[];
 }
