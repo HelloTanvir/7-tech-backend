@@ -102,11 +102,11 @@ export class Product {
     @Prop({ type: SchemaTypes.String, required: [true, 'Product category is required'] })
     category: string;
 
-    @Prop({ type: SchemaTypes.String, required: [true, 'Product image is required'] })
-    imageSrc: string;
+    @Prop({ type: [SchemaTypes.String], required: [true, 'Product images are required'] })
+    images: string[];
 
-    @Prop({ type: SchemaTypes.String, required: [true, 'Product image key is required'] })
-    key: string;
+    @Prop({ type: [SchemaTypes.String], required: [true, 'Product image keys are required'] })
+    keys: string[];
 
     @Prop({ type: SchemaTypes.String, default: 'Product' })
     imageAlt: string;
