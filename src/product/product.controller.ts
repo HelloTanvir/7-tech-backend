@@ -51,7 +51,7 @@ export class ProductController {
     @Post('/:id')
     @HttpCode(HttpStatus.OK)
     @UseFilters(HttpExceptionFilter)
-    @UseInterceptors(FilesInterceptor('images', 5, imageUploadOptions))
+    @UseInterceptors(FilesInterceptor('images', 4, imageUploadOptions))
     update(
         @Param('id') id: string | number,
         @Body() dto: ProductUpdateDto,
