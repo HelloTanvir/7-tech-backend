@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Public } from '../common/decorators';
 import { CategoryService } from './category.service';
 import { CategoryDto, CategoryUpdateDto } from './dto';
 import { Category } from './schema';
@@ -13,12 +14,14 @@ export class CategoryController {
         return this.categoryService.create(dto);
     }
 
+    @Public()
     @Get()
     @HttpCode(HttpStatus.OK)
     findAll(): Promise<Category[]> {
         return this.categoryService.findAll();
     }
 
+    @Public()
     @Get('/:id')
     @HttpCode(HttpStatus.OK)
     findOne(@Param('id') id: string | number): Promise<Category> {

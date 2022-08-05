@@ -13,6 +13,7 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { Public } from '../common/decorators';
 import { ProductDto, ProductUpdateDto } from './dto';
 import { ProductService } from './product.service';
 import { Product } from './schema';
@@ -33,12 +34,14 @@ export class ProductController {
         return this.productService.create(dto, images);
     }
 
+    @Public()
     @Get()
     @HttpCode(HttpStatus.OK)
     findAll(): Promise<Product[]> {
         return this.productService.findAll();
     }
 
+    @Public()
     @Get('/:id')
     @HttpCode(HttpStatus.OK)
     findOne(@Param('id') id: string | number): Promise<Product> {
