@@ -71,11 +71,10 @@ export class ProductService {
 
         if (dto.category) {
             const category = await this.categoryModel.findOne({ name: dto.category });
+
             if (!category) {
                 throw new ForbiddenException('category does not exist');
             }
-
-            await category.save();
         }
 
         if (images.length) {
