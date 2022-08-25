@@ -1,20 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes } from 'mongoose';
+import { Document } from 'mongoose';
+import { SubCategory } from './sub-category.schema';
 
 export type CategoryDocument = Category & Document;
 
-class SubCategory {
-    @Prop({ type: SchemaTypes.String, required: [true, 'Category name is required'], unique: true })
-    name: string;
-}
-
 @Schema({ timestamps: true })
 export class Category {
-    @Prop({ type: SchemaTypes.String, required: [true, 'Category name is required'], unique: true })
+    @Prop({ required: [true, 'Category name is required'], unique: true })
     name: string;
 
     @Prop({
-        type: [typeof SubCategory],
+        type: [SubCategory],
         default: [],
     })
     subCategories: SubCategory[];
