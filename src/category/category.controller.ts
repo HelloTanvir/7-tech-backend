@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from
 import { Public } from '../common/decorators';
 import { CategoryService } from './category.service';
 import { CategoryDto, CategoryUpdateDto } from './dto';
+import { SubCategoryUpdateDto } from './dto/sub-category-update.dto';
 import { Category } from './schema';
 
 @Controller('categories')
@@ -38,5 +39,24 @@ export class CategoryController {
     @HttpCode(HttpStatus.OK)
     delete(@Param('id') id: string | number): Promise<Category> {
         return this.categoryService.delete(id);
+    }
+
+    @Post('/:categoryId/:subCategoryId')
+    @HttpCode(HttpStatus.OK)
+    updateSubCategory(
+        @Param('categoryId') categoryId: string | number,
+        @Param('subCategoryId') subCategoryId: string | number,
+        @Body() dto: SubCategoryUpdateDto
+    ): Promise<Category> {
+        return this.categoryService.updateSubCategory(categoryId, subCategoryId, dto);
+    }
+
+    @Delete('/:categoryId/:subCategoryId')
+    @HttpCode(HttpStatus.OK)
+    deleteSubCategory(
+        @Param('categoryId') categoryId: string | number,
+        @Param('subCategoryId') subCategoryId: string | number
+    ): Promise<Category> {
+        return this.categoryService.deleteSubCategory(categoryId, subCategoryId);
     }
 }

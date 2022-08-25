@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryDto, CategoryUpdateDto } from './dto';
+import { SubCategoryUpdateDto } from './dto/sub-category-update.dto';
 import { Category, CategoryDocument } from './schema';
 
 @Injectable()
@@ -46,6 +47,58 @@ export class CategoryService {
         }
 
         await category.remove();
+
+        return category;
+    }
+
+    async updateSubCategory(
+        categoryId: string | number,
+        subCategoryId: string | number,
+        dto: SubCategoryUpdateDto
+    ): Promise<Category> {
+        const category = await this.categoryModel.findById(categoryId);
+        if (!category) {
+            throw new ForbiddenException('category does not exist');
+        }
+
+        const indexOfSubCategory = category.subCategories.findIndex(
+            (subCategory) =>
+                (subCategory as { _id: string; name: string })._id.toString() === subCategoryId
+        );
+        if (indexOfSubCategory == -1) {
+            throw new ForbiddenException('sub category does not exist');
+        }
+
+        category.subCategories[indexOfSubCategory].name = dto.name;
+
+        await category.save();
+
+        return category;
+    }
+
+    async deleteSubCategory(
+        categoryId: string | number,
+        subCategoryId: string | number
+    ): Promise<Category> {
+        const category = await this.categoryModel.findById(categoryId);
+        if (!category) {
+            throw new ForbiddenException('category does not exist');
+        }
+
+        const indexOfSubCategory = category.subCategories.findIndex(
+            (subCategory) =>
+                (subCategory as { _id: string; name: string })._id.toString() === subCategoryId
+        );
+        if (indexOfSubCategory == -1) {
+            throw new ForbiddenException('sub category does not exist');
+        }
+
+        category.subCategories = category.subCategories.filter(
+            (subCategory) =>
+                (subCategory as { _id: string; name: string })._id.toString() !== subCategoryId
+        );
+
+        await category.save();
 
         return category;
     }
