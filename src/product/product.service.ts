@@ -185,6 +185,10 @@ export class ProductService {
 
         const [review] = product.reviews.splice(reviewIndex, 1);
 
+        if (review.userId !== userId) {
+            throw new ForbiddenException('the user is not author of this review');
+        }
+
         product.averageRating =
             (product.averageRating * product.reviewCount - review.rating) /
             (product.reviewCount - 1);
