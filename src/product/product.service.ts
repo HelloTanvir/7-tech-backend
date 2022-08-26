@@ -46,7 +46,6 @@ export class ProductService {
         });
 
         await newProduct.save();
-        await category.save();
 
         return newProduct;
     }
