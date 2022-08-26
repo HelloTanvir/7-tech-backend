@@ -1,6 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import {
     IsArray,
+    IsBoolean,
     IsNotEmpty,
     IsNumberString,
     IsOptional,
@@ -10,19 +11,16 @@ import {
 } from 'class-validator';
 
 class Detail {
-    @IsOptional()
     @IsNotEmpty()
     @IsString()
     title: string;
 }
 
 class Information {
-    @IsOptional()
     @IsNotEmpty()
     @IsString()
     title: string;
 
-    @IsOptional()
     @IsNotEmpty()
     @IsString()
     description: string;
@@ -53,6 +51,29 @@ export class ProductUpdateDto {
     @IsNotEmpty()
     @IsString()
     category: string;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => String)
+    tags: string[];
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsBoolean()
+    isFeatured: boolean;
 
     @IsOptional()
     @IsNotEmpty()

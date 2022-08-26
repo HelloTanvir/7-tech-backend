@@ -1,6 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import {
     IsArray,
+    IsBoolean,
     IsNotEmpty,
     IsNumberString,
     IsOptional,
@@ -25,25 +26,6 @@ class Information {
     description: string;
 }
 
-// this will be used in review dto for creating product review by user
-// class Review {
-//     @IsNotEmpty()
-//     @IsString()
-//     name: string;
-
-//     @IsNotEmpty()
-//     @IsDateString()
-//     date: string;
-
-//     @IsNotEmpty()
-//     @IsString()
-//     comment: string;
-
-//     @IsNotEmpty()
-//     @IsNumberString({ message: 'Variant stock must be a number' })
-//     rating: number;
-// }
-
 export class ProductDto {
     @IsNotEmpty()
     @IsString()
@@ -64,6 +46,29 @@ export class ProductDto {
     @IsNotEmpty()
     @IsString()
     category: string;
+
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => String)
+    tags: string[];
+
+    @IsOptional()
+    @IsNotEmpty()
+    @IsBoolean()
+    isFeatured: boolean;
 
     @IsOptional()
     @IsNotEmpty()
