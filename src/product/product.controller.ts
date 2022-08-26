@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetCurrentUser, Public } from '../common/decorators';
-import { DetailsDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
+import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { ProductService } from './product.service';
 import { Product } from './schema';
 import { HttpExceptionFilter, imageUploadOptions } from './utils';
@@ -99,5 +99,20 @@ export class ProductController {
         @Param('detailsId') detailsId: string | number
     ): Promise<string> {
         return this.productService.deleteDetails(id, detailsId);
+    }
+
+    @Post('/:id/information')
+    @HttpCode(HttpStatus.CREATED)
+    addInformation(@Param('id') id: string | number, @Body() dto: InformationDto): Promise<string> {
+        return this.productService.addInformation(id, dto);
+    }
+
+    @Delete('/:id/information/:informationId')
+    @HttpCode(HttpStatus.OK)
+    deleteInformation(
+        @Param('id') id: string | number,
+        @Param('informationId') informationId: string | number
+    ): Promise<string> {
+        return this.productService.deleteInformation(id, informationId);
     }
 }

@@ -1,4 +1,5 @@
 export * from './details.dto';
+export * from './information.dto';
 export * from './product-update.dto';
 export * from './product.dto';
 export * from './review.dto';
