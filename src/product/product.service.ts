@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDocument } from '../auth/schema';
 import { Category, CategoryDocument } from '../category/schema';
-import { ProductDto, ProductUpdateDto, ReviewDto } from './dto';
+import { DetailsDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { Product, ProductDocument } from './schema';
 import { StorageService } from './utils';
 
@@ -197,5 +197,43 @@ export class ProductService {
         await product.save();
 
         return 'product review deleted successfully';
+    }
+
+    async addDetails(productId: string | number, dto: DetailsDto): Promise<string> {
+        const product = await this.productModel.findById(productId);
+
+        if (!product) {
+            throw new ForbiddenException('invalid product id');
+        }
+
+        product.details[product.details.length] = {
+            title: dto.title,
+        };
+
+        await product.save();
+
+        return 'details added successfully';
+    }
+
+    async deleteDetails(productId: string | number, detailsId: string | number): Promise<string> {
+        const product = await this.productModel.findById(productId);
+
+        if (!product) {
+            throw new ForbiddenException('invalid product id');
+        }
+
+        const detailsIndex = product.details.findIndex(
+            (d) => (d as any)._id.toString() === detailsId
+        );
+
+        if (detailsIndex == -1) {
+            throw new ForbiddenException('invalid details id');
+        }
+
+        product.details.splice(detailsIndex, 1);
+
+        await product.save();
+
+        return 'details deleted successfully';
     }
 }
