@@ -14,8 +14,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetCurrentUser, Public } from '../common/decorators';
-import { ProductDto, ProductUpdateDto } from './dto';
-import { ReviewDto } from './dto/review.dto';
+import { ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { ProductService } from './product.service';
 import { Product } from './schema';
 import { HttpExceptionFilter, imageUploadOptions } from './utils';

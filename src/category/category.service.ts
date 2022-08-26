@@ -1,8 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CategoryDto, CategoryUpdateDto } from './dto';
-import { SubCategoryUpdateDto } from './dto/sub-category-update.dto';
+import { CategoryDto, CategoryUpdateDto, SubCategoryUpdateDto } from './dto';
 import { Category, CategoryDocument } from './schema';
 
 @Injectable()

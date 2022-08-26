@@ -3,8 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDocument } from '../auth/schema';
 import { Category, CategoryDocument } from '../category/schema';
-import { ProductDto, ProductUpdateDto } from './dto';
-import { ReviewDto } from './dto/review.dto';
+import { ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { Product, ProductDocument } from './schema';
 import { StorageService } from './utils';
 

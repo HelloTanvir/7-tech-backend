@@ -1,8 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { Public } from '../common/decorators';
 import { CategoryService } from './category.service';
-import { CategoryDto, CategoryUpdateDto } from './dto';
-import { SubCategoryUpdateDto } from './dto/sub-category-update.dto';
+import { CategoryDto, CategoryUpdateDto, SubCategoryUpdateDto } from './dto';
 import { Category } from './schema';
 
 @Controller('categories')
