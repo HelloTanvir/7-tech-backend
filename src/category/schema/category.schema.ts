@@ -10,7 +10,7 @@ export class Category {
     name: string;
 
     @Prop({
-        type: [SubCategory],
+        type: [typeof SubCategory],
         default: [],
     })
     subCategories: SubCategory[];
