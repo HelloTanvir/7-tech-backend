@@ -13,8 +13,9 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { Public } from '../common/decorators';
+import { GetCurrentUser, Public } from '../common/decorators';
 import { ProductDto, ProductUpdateDto } from './dto';
+import { ReviewDto } from './dto/review.dto';
 import { ProductService } from './product.service';
 import { Product } from './schema';
 import { HttpExceptionFilter, imageUploadOptions } from './utils';
@@ -64,5 +65,25 @@ export class ProductController {
     @HttpCode(HttpStatus.OK)
     delete(@Param('id') id: string | number): Promise<Product> {
         return this.productService.delete(id);
+    }
+
+    @Post('/:id/review')
+    @HttpCode(HttpStatus.CREATED)
+    addReview(
+        @GetCurrentUser('userId') userId: number | string,
+        @Param('id') id: string | number,
+        @Body() dto: ReviewDto
+    ): Promise<string> {
+        return this.productService.addReview(userId, id, dto);
+    }
+
+    @Delete('/:id/review/:reviewId')
+    @HttpCode(HttpStatus.OK)
+    deleteReview(
+        @GetCurrentUser('userId') userId: number | string,
+        @Param('id') id: string | number,
+        @Param('reviewId') reviewId: string | number
+    ): Promise<string> {
+        return this.productService.deleteReview(userId, id, reviewId);
     }
 }
