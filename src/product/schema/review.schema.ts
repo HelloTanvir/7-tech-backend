@@ -3,6 +3,9 @@ import { Prop, Schema } from '@nestjs/mongoose';
 @Schema()
 export class Review {
     @Prop({ required: [true, 'Reviewer name is required'] })
+    userId: string;
+
+    @Prop({ required: [true, 'Reviewer name is required'] })
     name: string;
 
     @Prop({ default: Date.now })
