@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { GetCurrentUser, Public } from '../common/decorators';
 import { CategoryService } from './category.service';
-import { CategoryDto, CategoryUpdateDto, SubCategoryUpdateDto } from './dto';
+import { CategoryDto, CategoryUpdateDto, SubCategoryDto } from './dto';
 import { Category } from './schema';
 
 @Controller('categories')
@@ -73,13 +73,27 @@ export class CategoryController {
         return this.categoryService.delete(id);
     }
 
-    @Post('/:categoryId/:subCategoryId')
+    @Post('/:categoryId/sub-category')
+    @HttpCode(HttpStatus.CREATED)
+    addSubCategory(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('categoryId') categoryId: string | number,
+        @Body() dto: SubCategoryDto
+    ): Promise<Category> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
+        return this.categoryService.addSubCategory(categoryId, dto);
+    }
+
+    @Post('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
     updateSubCategory(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('categoryId') categoryId: string | number,
         @Param('subCategoryId') subCategoryId: string | number,
-        @Body() dto: SubCategoryUpdateDto
+        @Body() dto: SubCategoryDto
     ): Promise<Category> {
         if (!isAdmin) {
             throw new UnauthorizedException('you are not the admin');
@@ -88,7 +102,7 @@ export class CategoryController {
         return this.categoryService.updateSubCategory(categoryId, subCategoryId, dto);
     }
 
-    @Delete('/:categoryId/:subCategoryId')
+    @Delete('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
     deleteSubCategory(
         @GetCurrentUser('isAdmin') isAdmin: boolean,

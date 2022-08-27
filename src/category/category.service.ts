@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CategoryDto, CategoryUpdateDto, SubCategoryUpdateDto } from './dto';
+import { CategoryDto, CategoryUpdateDto, SubCategoryDto } from './dto';
 import { Category, CategoryDocument } from './schema';
 
 @Injectable()
@@ -50,10 +50,25 @@ export class CategoryService {
         return category;
     }
 
+    async addSubCategory(categoryId: string | number, dto: SubCategoryDto): Promise<Category> {
+        const category = await this.categoryModel.findById(categoryId);
+        if (!category) {
+            throw new ForbiddenException('category does not exist');
+        }
+
+        category.subCategories[category.subCategories.length] = {
+            name: dto.name,
+        };
+
+        await category.save();
+
+        return category;
+    }
+
     async updateSubCategory(
         categoryId: string | number,
         subCategoryId: string | number,
-        dto: SubCategoryUpdateDto
+        dto: SubCategoryDto
     ): Promise<Category> {
         const category = await this.categoryModel.findById(categoryId);
         if (!category) {
