@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    UnauthorizedException,
     UploadedFiles,
     UseFilters,
     // eslint-disable-next-line prettier/prettier
@@ -28,9 +29,14 @@ export class ProductController {
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(FilesInterceptor('images', 4, imageUploadOptions))
     create(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Body() dto: ProductDto,
         @UploadedFiles() images: Array<Express.Multer.File>
     ): Promise<Product> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.create(dto, images);
     }
 
@@ -53,16 +59,28 @@ export class ProductController {
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(FilesInterceptor('images', 4, imageUploadOptions))
     update(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('id') id: string | number,
         @Body() dto: ProductUpdateDto,
         @UploadedFiles() images: Array<Express.Multer.File>
     ): Promise<Product> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.update(id, dto, images);
     }
 
     @Delete('/:id')
     @HttpCode(HttpStatus.OK)
-    delete(@Param('id') id: string | number): Promise<Product> {
+    delete(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('id') id: string | number
+    ): Promise<Product> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.delete(id);
     }
 
@@ -88,31 +106,57 @@ export class ProductController {
 
     @Post('/:id/details')
     @HttpCode(HttpStatus.CREATED)
-    addDetails(@Param('id') id: string | number, @Body() dto: DetailsDto): Promise<string> {
+    addDetails(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('id') id: string | number,
+        @Body() dto: DetailsDto
+    ): Promise<string> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.addDetails(id, dto);
     }
 
     @Delete('/:id/details/:detailsId')
     @HttpCode(HttpStatus.OK)
     deleteDetails(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('id') id: string | number,
         @Param('detailsId') detailsId: string | number
     ): Promise<string> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.deleteDetails(id, detailsId);
     }
 
     @Post('/:id/information')
     @HttpCode(HttpStatus.CREATED)
-    addInformation(@Param('id') id: string | number, @Body() dto: InformationDto): Promise<string> {
+    addInformation(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('id') id: string | number,
+        @Body() dto: InformationDto
+    ): Promise<string> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.addInformation(id, dto);
     }
 
     @Delete('/:id/information/:informationId')
     @HttpCode(HttpStatus.OK)
     deleteInformation(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('id') id: string | number,
         @Param('informationId') informationId: string | number
     ): Promise<string> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
         return this.productService.deleteInformation(id, informationId);
     }
 }

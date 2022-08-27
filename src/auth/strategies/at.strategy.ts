@@ -25,6 +25,9 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
             throw new UnauthorizedException();
         }
 
-        return payload;
+        return {
+            ...payload,
+            isAdmin: user.isAdmin,
+        };
     }
 }
