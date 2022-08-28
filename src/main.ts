@@ -14,11 +14,10 @@ async function bootstrap() {
         .setTitle('Seven-Tech APIs')
         .setDescription('All the APIs are documented here')
         .setVersion('1.0.0')
-        .addTag('api-doc')
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('api-doc', app, document);
 
     await app.listen(process.env.PORT || 5000);
 }
