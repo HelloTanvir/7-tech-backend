@@ -17,7 +17,7 @@ import { ProductModule } from './product/product.module';
             useClass: MongooseConfigService,
         }),
         ServeStaticModule.forRoot({
-            rootPath: join(__dirname, '..', 'api-docs'),
+            rootPath: join(__dirname, 'api-docs'),
         }),
         AuthModule,
         CategoryModule,
