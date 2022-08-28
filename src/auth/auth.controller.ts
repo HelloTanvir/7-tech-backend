@@ -22,7 +22,7 @@ import { RtGuard } from '../common/guards';
 import { AuthService } from './auth.service';
 import { ForgotPasswordDto, LoginDto, ResetPasswordDto, SignUpDto } from './dto';
 import { User } from './schema';
-import { Tokens } from './types';
+import { Tokens, TokensForDoc } from './types';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -33,7 +33,7 @@ export class AuthController {
     @Post('signup')
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Create account' })
-    @ApiCreatedResponse()
+    @ApiCreatedResponse({ type: TokensForDoc })
     signUp(@Body() dto: SignUpDto): Promise<Tokens> {
         return this.authService.signUp(dto);
     }
@@ -42,7 +42,7 @@ export class AuthController {
     @Post('login')
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Login to account' })
-    @ApiCreatedResponse()
+    @ApiCreatedResponse({ type: TokensForDoc })
     login(@Body() dto: LoginDto): Promise<Tokens> {
         return this.authService.login(dto);
     }
@@ -70,7 +70,7 @@ export class AuthController {
     @Post('refresh-token')
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Refresh auth tokens' })
-    @ApiOkResponse()
+    @ApiOkResponse({ type: TokensForDoc })
     @ApiBearerAuth()
     refreshToken(
         @GetCurrentUser('userId') userId: number | string,
