@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Put,
     UnauthorizedException,
     UploadedFiles,
     UseFilters,
@@ -54,7 +55,7 @@ export class ProductController {
         return this.productService.findOne(id);
     }
 
-    @Post('/:id')
+    @Put('/:id')
     @HttpCode(HttpStatus.OK)
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(FilesInterceptor('images', 4, imageUploadOptions))

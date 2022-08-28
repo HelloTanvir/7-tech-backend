@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Put,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
@@ -46,7 +47,7 @@ export class CategoryController {
         return this.categoryService.findOne(id);
     }
 
-    @Post('/:id')
+    @Put('/:id')
     @HttpCode(HttpStatus.OK)
     update(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
@@ -87,7 +88,7 @@ export class CategoryController {
         return this.categoryService.addSubCategory(categoryId, dto);
     }
 
-    @Post('/:categoryId/sub-category/:subCategoryId')
+    @Put('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
     updateSubCategory(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
