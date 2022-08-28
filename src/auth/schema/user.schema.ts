@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
 import { Document, SchemaTypes } from 'mongoose';
 
@@ -6,24 +7,29 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
+    @ApiProperty()
     @Prop({ default: false })
     isAdmin: boolean;
 
+    @ApiProperty()
     @Prop({ required: [true, 'User name is required'] })
     fullName: string;
 
+    @ApiProperty()
     @Prop({
         required: [true, 'User email address is required'],
         unique: true,
     })
     email: string;
 
+    @ApiProperty()
     @Prop({ required: [true, 'User phone number is required'] })
     phoneNumber: string;
 
     @Prop({ required: [true, 'User password is required'] })
     password: string;
 
+    @ApiProperty()
     @Prop({ type: SchemaTypes.String, default: null })
     refreshToken: string | null;
 }
