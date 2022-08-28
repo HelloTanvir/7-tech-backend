@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Detail } from './details.schema';
-import { Information } from './information.schema';
-import { Review } from './review.schema';
+import { Detail, DetailSchema } from './details.schema';
+import { Information, InformationSchema } from './information.schema';
+import { Review, ReviewSchema } from './review.schema';
 
 export type ProductDocument = Product & Document;
 
@@ -56,13 +56,13 @@ export class Product {
     @Prop({ default: 'Product' })
     imageAlt: string;
 
-    @Prop({ type: [typeof Detail], default: [] })
+    @Prop({ type: [DetailSchema], default: [] })
     details: Detail[];
 
-    @Prop({ type: [typeof Information], default: [] })
+    @Prop({ type: [InformationSchema], default: [] })
     information: Information[];
 
-    @Prop({ type: [typeof Review], default: [] })
+    @Prop({ type: [ReviewSchema], default: [] })
     reviews: Review[];
 }
 

@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Information {
@@ -8,3 +8,5 @@ export class Information {
     @Prop({ required: [true, 'Product info description is required'] })
     description: string;
 }
+
+export const InformationSchema = SchemaFactory.createForClass(Information);

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { SubCategory } from './sub-category.schema';
+import { SubCategory, SubCategorySchema } from './sub-category.schema';
 
 export type CategoryDocument = Category & Document;
 
@@ -10,7 +10,7 @@ export class Category {
     name: string;
 
     @Prop({
-        type: [typeof SubCategory],
+        type: [SubCategorySchema],
         default: [],
     })
     subCategories: SubCategory[];

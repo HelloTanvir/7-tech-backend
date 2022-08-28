@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Review {
@@ -20,3 +20,5 @@ export class Review {
     })
     rating: number;
 }
+
+export const ReviewSchema = SchemaFactory.createForClass(Review);
