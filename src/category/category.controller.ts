@@ -11,17 +11,29 @@ import {
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
+import {
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiOperation,
+    // eslint-disable-next-line prettier/prettier
+    ApiTags
+} from '@nestjs/swagger';
 import { GetCurrentUser, Public } from '../common/decorators';
 import { CategoryService } from './category.service';
 import { CategoryDto, CategoryUpdateDto, SubCategoryDto } from './dto';
 import { Category } from './schema';
 
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoryController {
     constructor(private categoryService: CategoryService) {}
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Create a category' })
+    @ApiCreatedResponse({ type: Category })
+    @ApiBearerAuth()
     create(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Body() dto: CategoryDto
@@ -36,46 +48,59 @@ export class CategoryController {
     @Public()
     @Get()
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Gel all categories' })
+    @ApiOkResponse({ type: [Category] })
     findAll(): Promise<Category[]> {
         return this.categoryService.findAll();
     }
 
     @Public()
-    @Get('/:id')
+    @Get('/:categoryId')
     @HttpCode(HttpStatus.OK)
-    findOne(@Param('id') id: string | number): Promise<Category> {
-        return this.categoryService.findOne(id);
+    @ApiOperation({ summary: 'Gel a single category' })
+    @ApiOkResponse({ type: Category })
+    findOne(@Param('categoryId') categoryId: string | number): Promise<Category> {
+        return this.categoryService.findOne(categoryId);
     }
 
-    @Put('/:id')
+    @Put('/:categoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Update a category' })
+    @ApiOkResponse({ type: Category })
+    @ApiBearerAuth()
     update(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
-        @Param('id') id: string | number,
+        @Param('categoryId') categoryId: string | number,
         @Body() dto: CategoryUpdateDto
     ): Promise<Category> {
         if (!isAdmin) {
             throw new UnauthorizedException('you are not the admin');
         }
 
-        return this.categoryService.update(id, dto);
+        return this.categoryService.update(categoryId, dto);
     }
 
-    @Delete('/:id')
+    @Delete('/:categoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Delete a category' })
+    @ApiOkResponse({ type: Category })
+    @ApiBearerAuth()
     delete(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
-        @Param('id') id: string | number
+        @Param('categoryId') categoryId: string | number
     ): Promise<Category> {
         if (!isAdmin) {
             throw new UnauthorizedException('you are not the admin');
         }
 
-        return this.categoryService.delete(id);
+        return this.categoryService.delete(categoryId);
     }
 
     @Post('/:categoryId/sub-category')
     @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Create a sub-category' })
+    @ApiCreatedResponse({ type: Category })
+    @ApiBearerAuth()
     addSubCategory(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('categoryId') categoryId: string | number,
@@ -90,6 +115,9 @@ export class CategoryController {
 
     @Put('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Update a sub-category' })
+    @ApiOkResponse({ type: Category })
+    @ApiBearerAuth()
     updateSubCategory(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('categoryId') categoryId: string | number,
@@ -105,6 +133,9 @@ export class CategoryController {
 
     @Delete('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Delete a sub-category' })
+    @ApiOkResponse({ type: Category })
+    @ApiBearerAuth()
     deleteSubCategory(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('categoryId') categoryId: string | number,
