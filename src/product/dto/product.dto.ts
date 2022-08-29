@@ -91,7 +91,7 @@ export class ProductDto {
     @IsString()
     imageAlt: string;
 
-    @ApiProperty({ type: [Detail] })
+    @ApiProperty({ type: [Detail], isArray: true })
     @IsOptional()
     @IsNotEmpty()
     @Transform(
@@ -110,7 +110,7 @@ export class ProductDto {
     @Type(() => Detail)
     details: Detail[];
 
-    @ApiProperty({ type: [Information] })
+    @ApiProperty({ type: [Information], isArray: true })
     @IsOptional()
     @IsNotEmpty()
     @Transform(
