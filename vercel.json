@@ -11,11 +11,6 @@
       "src": "/(.*)",
       "dest": "dist/main.js",
       "methods": ["OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"]
-    },
-    {
-      "src": "/api-docs/swagger-ui.css",
-      "dest": "node_modules/swagger-ui-dist/swagger-ui.css",
-      "methods": ["OPTIONS", "GET"]
     }
   ]
 }
