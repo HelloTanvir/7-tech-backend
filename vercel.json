@@ -2,15 +2,20 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/main.js",
+      "src": "src/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/main.js",
+      "dest": "src/main.ts",
       "methods": ["OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"]
+    },
+    {
+      "src": "/api-docs/swagger-ui.css",
+      "dest": "node_modules/swagger-ui-dist/swagger-ui.css",
+      "methods": ["OPTIONS", "GET"]
     }
   ]
 }
