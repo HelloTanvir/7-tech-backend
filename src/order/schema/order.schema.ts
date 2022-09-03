@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
+import { ProductInfo, ProductInfoSchema } from './product-info.schema';
 
 export type OrderDocument = Order & Document;
 
@@ -9,6 +10,34 @@ export class Order {
     @ApiProperty()
     @Prop({ required: [true, 'User id is required'] })
     userId: string;
+
+    @ApiProperty({ type: [ProductInfo] })
+    @Prop({
+        type: [ProductInfoSchema],
+        default: [],
+    })
+    products: ProductInfo[];
+
+    // delivery details
+    @ApiProperty()
+    @Prop({ required: [true, 'Customer address is required'] })
+    address: string;
+
+    @ApiProperty()
+    @Prop({ required: [true, 'Customer city is required'] })
+    city: string;
+
+    @ApiProperty()
+    @Prop({ required: [true, 'Customer zone is required'] })
+    zone: string;
+
+    // status
+    @Prop({ default: 'pending' })
+    status: string;
+
+    // cart total
+    @Prop({ required: [true, 'Cart total is required'] })
+    total: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
