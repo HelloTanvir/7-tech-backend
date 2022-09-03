@@ -9,13 +9,21 @@ import {
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiOperation,
+    // eslint-disable-next-line prettier/prettier
+    ApiTags
+} from '@nestjs/swagger';
 import { GetCurrentUser } from '../common/decorators';
 import { OrderDto } from './dto';
 import { OrderService } from './order.service';
 import { Order } from './schema';
 
-@Controller('order')
+@ApiTags('Orders')
+@Controller('orders')
 export class OrderController {
     constructor(private orderService: OrderService) {}
 
