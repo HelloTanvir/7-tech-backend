@@ -1,9 +1,55 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsNumberString, IsString, ValidateNested } from 'class-validator';
+
+class ProductInfo {
+    @ApiProperty({ example: 'r46frf1f6f46ef1', description: 'Ordered product id' })
+    @IsNotEmpty()
+    @IsString()
+    productId: string;
+
+    @ApiProperty({ example: '10', description: 'Quantity of the ordered product' })
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product quantity must be a number' })
+    quantity: number;
+}
 
 export class OrderDto {
-    @ApiProperty({ example: 'ieh44f4ef64we44fn66', description: 'User id of the order creator' })
+    @ApiProperty({ example: '4f4f61e4fc6e4fe4f', description: 'Customer id' })
     @IsNotEmpty()
     @IsString()
     userId: string;
+
+    @ApiProperty({ type: [ProductInfo] })
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => ProductInfo)
+    products: ProductInfo[];
+
+    @ApiProperty({ example: 'Uttara', description: 'Delivery address' })
+    @IsNotEmpty()
+    @IsString()
+    address: string;
+
+    @ApiProperty({ example: 'Dhaka', description: 'Delivery city' })
+    @IsNotEmpty()
+    @IsString()
+    city: string;
+
+    @ApiProperty({ example: 'Sector-10', description: 'Delivery zone' })
+    @IsNotEmpty()
+    @IsString()
+    zone: string;
 }
