@@ -91,7 +91,7 @@ export class ProductDto {
     @IsString()
     imageAlt: string;
 
-    @ApiProperty({ type: [Detail], isArray: true })
+    @ApiProperty({ type: [Detail], isArray: true, example: [{ title: '2 years of warranty' }] })
     @IsOptional()
     @IsNotEmpty()
     @Transform(
@@ -110,7 +110,11 @@ export class ProductDto {
     @Type(() => Detail)
     details: Detail[];
 
-    @ApiProperty({ type: [Information], isArray: true })
+    @ApiProperty({
+        type: [Information],
+        isArray: true,
+        example: [{ title: 'RAM', description: '64 GB' }],
+    })
     @IsOptional()
     @IsNotEmpty()
     @Transform(

@@ -80,13 +80,13 @@ export class ProductUpdateDto {
         { toClassOnly: true }
     )
     @IsArray()
-    @ValidateNested({ each: true })
     @Type(() => String)
     tags: string[];
 
     @ApiProperty({ example: false, description: 'Is the product featured?' })
     @IsOptional()
     @IsNotEmpty()
+    @Transform(({ value }) => value === 'true', { toClassOnly: true })
     @IsBoolean()
     isFeatured: boolean;
 
@@ -96,7 +96,7 @@ export class ProductUpdateDto {
     @IsString()
     imageAlt: string;
 
-    @ApiProperty({ type: [Detail], isArray: true })
+    @ApiProperty({ type: [Detail], isArray: true, example: [{ title: '2 years of warranty' }] })
     @IsOptional()
     @IsNotEmpty()
     @Transform(
@@ -115,7 +115,11 @@ export class ProductUpdateDto {
     @Type(() => Detail)
     details: Detail[];
 
-    @ApiProperty({ type: [Information], isArray: true })
+    @ApiProperty({
+        type: [Information],
+        isArray: true,
+        example: [{ title: 'RAM', description: '64 GB' }],
+    })
     @IsOptional()
     @IsNotEmpty()
     @Transform(
