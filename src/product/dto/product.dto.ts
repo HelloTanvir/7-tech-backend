@@ -63,25 +63,25 @@ export class ProductDto {
     })
     @IsOptional()
     @IsNotEmpty()
-    // @Transform(
-    //     ({ value }) => {
-    //         if (value && typeof value === 'string') {
-    //             return JSON.parse(value);
-    //         } else if (value && typeof value === 'object') {
-    //             return value;
-    //         }
-    //         return [];
-    //     },
-    //     { toClassOnly: true }
-    // )
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
     @IsArray()
-    @ValidateNested({ each: true })
     @Type(() => String)
     tags: string[];
 
     @ApiProperty({ example: false, description: 'Is the product featured?' })
     @IsOptional()
     @IsNotEmpty()
+    @Transform(({ value }) => value === 'true', { toClassOnly: true })
     @IsBoolean()
     isFeatured: boolean;
 
