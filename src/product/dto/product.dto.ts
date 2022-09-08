@@ -6,9 +6,8 @@ import {
     IsNotEmpty,
     IsNumberString,
     IsOptional,
-    IsString,
     // eslint-disable-next-line prettier/prettier
-    ValidateNested
+    IsString
 } from 'class-validator';
 
 class Detail {
@@ -106,7 +105,7 @@ export class ProductDto {
         { toClassOnly: true }
     )
     @IsArray()
-    @ValidateNested({ each: true })
+    // @ValidateNested({ each: true })
     @Type(() => Detail)
     details: Detail[];
 
@@ -129,7 +128,7 @@ export class ProductDto {
         { toClassOnly: true }
     )
     @IsArray()
-    @ValidateNested({ each: true })
+    // @ValidateNested({ each: true })
     @Type(() => Information)
     information: Information[];
 }
