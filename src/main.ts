@@ -7,7 +7,12 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     app.enableCors({
-        origin: ['http://localhost:3000', 'http://127.0.0.1:3000', '*'],
+        origin: [
+            'https://www.seventech.com.bd',
+            'http://localhost:3000',
+            'http://127.0.0.1:3000',
+            '*',
+        ],
     });
 
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
