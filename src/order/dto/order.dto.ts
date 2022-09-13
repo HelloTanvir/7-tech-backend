@@ -48,6 +48,16 @@ export class OrderDto {
     @IsString()
     address: string;
 
+    @ApiProperty({ example: 'Dhaka', description: 'Delivery city' })
+    @IsNotEmpty()
+    @IsString()
+    city: string;
+
+    @ApiProperty({ example: 'Sector - 10', description: 'Delivery zone' })
+    @IsNotEmpty()
+    @IsString()
+    zone: string;
+
     @ApiProperty({
         example: 'cash-on-delivery',
         description: 'Status of the order',
