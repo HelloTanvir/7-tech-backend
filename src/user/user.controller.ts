@@ -1,16 +1,19 @@
 import {
+    Body,
     Controller,
     Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    Put,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '../auth/schema';
 import { GetCurrentUser } from '../common/decorators';
+import { ProfileUpdateDto } from './dto';
 import { UserService } from './user.service';
 
 @ApiTags('User')
@@ -45,6 +48,23 @@ export class UserController {
         }
 
         return this.userService.findOne(userId);
+    }
+
+    @Put('/:userId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Update user profile' })
+    @ApiOkResponse({ type: User })
+    @ApiBearerAuth()
+    update(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('userId') userId: string | number,
+        @Body() dto: ProfileUpdateDto
+    ): Promise<User> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
+        return this.userService.update(userId, dto);
     }
 
     @Delete('/:userId')
