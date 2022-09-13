@@ -48,7 +48,11 @@ export class OrderDto {
     @IsString()
     address: string;
 
-    @ApiProperty({ example: 'delivered', description: 'Status of the order' })
+    @ApiProperty({
+        example: 'cash-on-delivery',
+        description: 'Status of the order',
+        enum: ['bkash', 'cash-on-delivery'],
+    })
     @IsNotEmpty()
     @IsString()
     @IsIn(['bkash', 'cash-on-delivery'])
