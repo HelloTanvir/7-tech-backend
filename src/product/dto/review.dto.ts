@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumberString, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ReviewDto {
     @ApiProperty({
@@ -13,6 +13,6 @@ export class ReviewDto {
 
     @ApiProperty({ example: 5, description: 'rating in the review' })
     @IsNotEmpty()
-    @IsNumberString({ message: 'Rating must be a number' })
+    @IsNumber()
     rating: number;
 }
