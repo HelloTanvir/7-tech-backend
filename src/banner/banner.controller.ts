@@ -1,5 +1,6 @@
 import {
     Controller,
+    Get,
     HttpCode,
     HttpStatus,
     Post,
@@ -10,8 +11,15 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetCurrentUser } from '../common/decorators';
+import {
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiOperation,
+    // eslint-disable-next-line prettier/prettier
+    ApiTags
+} from '@nestjs/swagger';
+import { GetCurrentUser, Public } from '../common/decorators';
 import { HttpExceptionFilter, imageUploadOptions } from '../utils';
 import { BannerService } from './banner.service';
 import { Banner } from './schema';
@@ -37,5 +45,14 @@ export class BannerController {
         }
 
         return this.bannerService.create(images);
+    }
+
+    @Public()
+    @Get()
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Get banners' })
+    @ApiOkResponse({ type: [Banner], isArray: true })
+    findAll(): Promise<Banner[]> {
+        return this.bannerService.findAll();
     }
 }

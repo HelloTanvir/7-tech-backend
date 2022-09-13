@@ -35,4 +35,8 @@ export class BannerService {
 
         return banner;
     }
+
+    async findAll(): Promise<Banner[]> {
+        return await this.bannerModel.find();
+    }
 }
