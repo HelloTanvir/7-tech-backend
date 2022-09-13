@@ -15,6 +15,8 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
     ApiBearerAuth,
+    ApiBody,
+    ApiConsumes,
     ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
@@ -34,6 +36,22 @@ export class BannerController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Add banners' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        required: true,
+        schema: {
+            type: 'object',
+            properties: {
+                images: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        format: 'binary',
+                    },
+                },
+            },
+        },
+    })
     @ApiCreatedResponse({ type: Banner })
     @ApiBearerAuth()
     @UseFilters(HttpExceptionFilter)
