@@ -15,10 +15,15 @@ class ProductInfo {
 }
 
 export class OrderDto {
-    @ApiProperty({ example: '4f4f61e4fc6e4fe4f', description: 'Customer id' })
+    @ApiProperty({ example: 'Tanvir Hossain', description: 'Customer name' })
     @IsNotEmpty()
     @IsString()
-    userId: string;
+    customer_name: string;
+
+    @ApiProperty({ example: '01325478641', description: 'Customer mobile number' })
+    @IsNotEmpty()
+    @IsString()
+    customer_number: string;
 
     @ApiProperty({ type: [ProductInfo] })
     @IsNotEmpty()

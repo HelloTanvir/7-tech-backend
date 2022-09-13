@@ -8,8 +8,12 @@ export type OrderDocument = Order & Document;
 @Schema({ timestamps: true })
 export class Order {
     @ApiProperty()
-    @Prop({ required: [true, 'User id is required'] })
-    userId: string;
+    @Prop({ required: [true, 'Customer name is required'] })
+    customer_name: string;
+
+    @ApiProperty()
+    @Prop({ required: [true, 'Customer mobile number is required'] })
+    customer_number: string;
 
     @ApiProperty({ type: [ProductInfo] })
     @Prop({
