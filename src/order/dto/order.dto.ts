@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumberString, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
 
 class ProductInfo {
     @ApiProperty({ example: 'r46frf1f6f46ef1', description: 'Ordered product id' })
@@ -10,7 +10,7 @@ class ProductInfo {
 
     @ApiProperty({ example: '10', description: 'Quantity of the ordered product' })
     @IsNotEmpty()
-    @IsNumberString({ message: 'Product quantity must be a number' })
+    @IsNumber()
     quantity: number;
 }
 

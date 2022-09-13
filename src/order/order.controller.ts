@@ -6,6 +6,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Put,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
@@ -18,7 +19,7 @@ import {
     ApiTags
 } from '@nestjs/swagger';
 import { GetCurrentUser } from '../common/decorators';
-import { OrderDto } from './dto';
+import { OrderDto, OrderUpdateDto } from './dto';
 import { OrderService } from './order.service';
 import { Order } from './schema';
 
@@ -54,5 +55,22 @@ export class OrderController {
     @ApiOkResponse({ type: Order })
     findOne(@Param('orderId') orderId: string | number): Promise<Order> {
         return this.orderService.findOne(orderId);
+    }
+
+    @Put('/:orderId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Update an order' })
+    @ApiOkResponse({ type: Order })
+    @ApiBearerAuth()
+    update(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('orderId') orderId: string | number,
+        @Body() dto: OrderUpdateDto
+    ): Promise<Order> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
+        return this.orderService.update(orderId, dto);
     }
 }
