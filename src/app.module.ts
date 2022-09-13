@@ -9,6 +9,7 @@ import { MongooseConfigService } from './mongoose/mongoose-config.service';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { BannerModule } from './banner/banner.module';
+import { UserModule } from './user/user.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { BannerModule } from './banner/banner.module';
         ProductModule,
         OrderModule,
         BannerModule,
+        UserModule,
     ],
     providers: [
         {
