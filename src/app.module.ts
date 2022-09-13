@@ -8,6 +8,7 @@ import { AtGuard } from './common/guards';
 import { MongooseConfigService } from './mongoose/mongoose-config.service';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
+import { BannerModule } from './banner/banner.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { OrderModule } from './order/order.module';
         CategoryModule,
         ProductModule,
         OrderModule,
+        BannerModule,
     ],
     providers: [
         {
