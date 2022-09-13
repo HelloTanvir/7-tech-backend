@@ -19,7 +19,7 @@ import {
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
-import { GetCurrentUser } from '../common/decorators';
+import { GetCurrentUser, Public } from '../common/decorators';
 import { OrderDto, OrderUpdateDto } from './dto';
 import { OrderService } from './order.service';
 import { Order } from './schema';
@@ -29,16 +29,12 @@ import { Order } from './schema';
 export class OrderController {
     constructor(private orderService: OrderService) {}
 
+    @Public()
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Create an order' })
     @ApiCreatedResponse({ type: Order })
-    @ApiBearerAuth()
-    create(@GetCurrentUser('isAdmin') isAdmin: boolean, @Body() dto: OrderDto): Promise<Order> {
-        if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
-        }
-
+    create(@Body() dto: OrderDto): Promise<Order> {
         return this.orderService.create(dto);
     }
 
