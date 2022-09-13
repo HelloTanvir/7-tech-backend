@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpCode,
     HttpStatus,
@@ -72,5 +73,21 @@ export class OrderController {
         }
 
         return this.orderService.update(orderId, dto);
+    }
+
+    @Delete('/:orderId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Delete an order' })
+    @ApiOkResponse({ type: Order })
+    @ApiBearerAuth()
+    delete(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('orderId') orderId: string | number
+    ): Promise<Order> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
+        return this.orderService.delete(orderId);
     }
 }

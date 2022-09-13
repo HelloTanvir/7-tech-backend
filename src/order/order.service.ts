@@ -49,10 +49,24 @@ export class OrderService {
 
     async update(id: string | number, dto: OrderUpdateDto): Promise<Order> {
         const order = await this.orderModel.findById(id);
+        if (!order) {
+            throw new ForbiddenException('order does not exist');
+        }
 
         order.status = dto.status;
 
         await order.save();
+
+        return order;
+    }
+
+    async delete(id: string | number): Promise<Order> {
+        const order = await this.orderModel.findById(id);
+        if (!order) {
+            throw new ForbiddenException('order does not exist');
+        }
+
+        await order.remove();
 
         return order;
     }
