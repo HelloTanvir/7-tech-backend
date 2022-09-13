@@ -39,4 +39,21 @@ export class BannerService {
     async findAll(): Promise<Banner[]> {
         return await this.bannerModel.find();
     }
+
+    async delete(id: string | number): Promise<Banner> {
+        const banner = await this.bannerModel.findById(id);
+        if (!banner) {
+            throw new ForbiddenException('banner does not exist');
+        }
+
+        // delete images
+        for (const key of banner.keys) {
+            await this.storageService.deleteFile(key);
+        }
+
+        // delete banner
+        await banner.remove();
+
+        return banner;
+    }
 }

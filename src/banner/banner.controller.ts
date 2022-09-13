@@ -1,8 +1,10 @@
 import {
     Controller,
+    Delete,
     Get,
     HttpCode,
     HttpStatus,
+    Param,
     Post,
     UnauthorizedException,
     UploadedFiles,
@@ -54,5 +56,21 @@ export class BannerController {
     @ApiOkResponse({ type: [Banner], isArray: true })
     findAll(): Promise<Banner[]> {
         return this.bannerService.findAll();
+    }
+
+    @Delete('/:bannerId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Delete a banner' })
+    @ApiOkResponse({ type: Banner })
+    @ApiBearerAuth()
+    delete(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('bannerId') bannerId: string | number
+    ): Promise<Banner> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('you are not the admin');
+        }
+
+        return this.bannerService.delete(bannerId);
     }
 }
