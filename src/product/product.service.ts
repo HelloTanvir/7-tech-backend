@@ -3,9 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../auth/schema';
 import { Category, CategoryDocument } from '../category/schema';
+import { StorageService } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { Product, ProductDocument } from './schema';
-import { StorageService } from './utils';
 
 @Injectable()
 export class ProductService {

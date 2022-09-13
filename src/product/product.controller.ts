@@ -24,10 +24,10 @@ import {
     ApiTags
 } from '@nestjs/swagger';
 import { GetCurrentUser, Public } from '../common/decorators';
+import { HttpExceptionFilter, imageUploadOptions } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { ProductService } from './product.service';
 import { Product } from './schema';
-import { HttpExceptionFilter, imageUploadOptions } from './utils';
 
 @ApiTags('Products')
 @Controller('products')
