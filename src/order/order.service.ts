@@ -1,15 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Product, ProductDocument } from '../product/schema';
 import { OrderDto } from './dto';
 import { Order, OrderDocument } from './schema';
 
 @Injectable()
 export class OrderService {
-    constructor(@InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>) {}
+    constructor(
+        @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
+        @InjectModel(Product.name) private readonly productModel: Model<ProductDocument>
+    ) {}
 
     async create(dto: OrderDto): Promise<Order> {
-        const order = new this.orderModel(dto);
+        // cart total
+        let total = 0;
+
+        for (const product of dto.products) {
+            const savedProduct = await this.productModel.findById(product.productId);
+
+            if (!savedProduct) {
+                throw new ForbiddenException(`invalid product id: ${product.productId}`);
+            }
+
+            const productPrice = savedProduct.price;
+            const productQuantity = product.quantity;
+
+            total += productPrice * productQuantity;
+        }
+
+        const order = new this.orderModel({
+            ...dto,
+            total,
+        });
+
         await order.save();
 
         return order;
