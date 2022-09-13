@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserDocument } from '../auth/schema';
+import { User, UserDocument } from '../auth/schema';
 import { Category, CategoryDocument } from '../category/schema';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { Product, ProductDocument } from './schema';
@@ -12,7 +12,7 @@ export class ProductService {
     constructor(
         @InjectModel(Product.name) private readonly productModel: Model<ProductDocument>,
         @InjectModel(Category.name) private readonly categoryModel: Model<CategoryDocument>,
-        @InjectModel(Category.name) private readonly userModel: Model<UserDocument>,
+        @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
         private readonly storageService: StorageService
     ) {}
 
