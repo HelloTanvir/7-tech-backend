@@ -24,12 +24,8 @@ export class Order {
     address: string;
 
     @ApiProperty()
-    @Prop({ required: [true, 'Customer city is required'] })
-    city: string;
-
-    @ApiProperty()
-    @Prop({ required: [true, 'Customer zone is required'] })
-    zone: string;
+    @Prop({ required: [true, 'Payment method is required'] })
+    payment_method: string;
 
     // status
     @Prop({ default: 'pending' })

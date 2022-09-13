@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsIn, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
 
 class ProductInfo {
     @ApiProperty({ example: 'r46frf1f6f46ef1', description: 'Ordered product id' })
@@ -43,13 +43,9 @@ export class OrderDto {
     @IsString()
     address: string;
 
-    @ApiProperty({ example: 'Dhaka', description: 'Delivery city' })
+    @ApiProperty({ example: 'delivered', description: 'Status of the order' })
     @IsNotEmpty()
     @IsString()
-    city: string;
-
-    @ApiProperty({ example: 'Sector-10', description: 'Delivery zone' })
-    @IsNotEmpty()
-    @IsString()
-    zone: string;
+    @IsIn(['bkash', 'cash-on-delivery'])
+    payment_method: string;
 }
