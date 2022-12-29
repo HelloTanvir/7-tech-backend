@@ -49,6 +49,10 @@ export class Product {
     @Prop({ required: [true, 'Product category is required'] })
     category: string;
 
+    @ApiProperty()
+    @Prop()
+    subCategory?: string;
+
     @ApiProperty({ type: [String], isArray: true })
     @Prop({ type: [String], required: [true, 'Product images are required'] })
     images: string[];

@@ -31,6 +31,15 @@ export class ProductService {
             throw new ForbiddenException('category does not exist');
         }
 
+        if (dto.subCategory) {
+            const subCategory = category.subCategories.find(
+                (subCategory) => subCategory.name === dto.subCategory
+            );
+            if (!subCategory) {
+                throw new ForbiddenException('sub category does not exist');
+            }
+        }
+
         // upload images
         const imagePaths: string[] = [];
         const keys: string[] = [];
@@ -75,6 +84,15 @@ export class ProductService {
 
             if (!category) {
                 throw new ForbiddenException('category does not exist');
+            }
+
+            if (dto.subCategory) {
+                const subCategory = category.subCategories.find(
+                    (subCategory) => subCategory.name === dto.subCategory
+                );
+                if (!subCategory) {
+                    throw new ForbiddenException('sub category does not exist');
+                }
             }
         }
 
