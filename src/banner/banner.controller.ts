@@ -20,6 +20,7 @@ import {
     ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiParam,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
@@ -78,6 +79,7 @@ export class BannerController {
 
     @Delete('/:bannerId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'bannerId', type: 'string' })
     @ApiOperation({ summary: 'Delete a banner' })
     @ApiOkResponse({ type: Banner })
     @ApiBearerAuth()

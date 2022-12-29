@@ -83,8 +83,6 @@ export class CategoryController {
         return this.categoryService.update(categoryId, dto);
     }
 
-    // TODO: remove public after testing
-    @Public()
     @Delete('/:categoryId')
     @HttpCode(HttpStatus.OK)
     @ApiParam({ name: 'categoryId', type: 'string' })

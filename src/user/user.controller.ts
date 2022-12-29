@@ -10,7 +10,7 @@ import {
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { User } from '../auth/schema';
 import { GetCurrentUser } from '../common/decorators';
 import { ProfileUpdateDto } from './dto';
@@ -36,6 +36,7 @@ export class UserController {
 
     @Get('/:userId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'userId', type: 'string' })
     @ApiOperation({ summary: 'Get a user' })
     @ApiOkResponse({ type: User })
     @ApiBearerAuth()
@@ -52,6 +53,7 @@ export class UserController {
 
     @Put('/:userId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'userId', type: 'string' })
     @ApiOperation({ summary: 'Update user profile' })
     @ApiOkResponse({ type: User })
     @ApiBearerAuth()
@@ -69,6 +71,7 @@ export class UserController {
 
     @Delete('/:userId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'userId', type: 'string' })
     @ApiOperation({ summary: 'Delete a user' })
     @ApiOkResponse({ type: User })
     @ApiBearerAuth()
