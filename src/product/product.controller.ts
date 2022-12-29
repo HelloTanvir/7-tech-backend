@@ -1,13 +1,16 @@
 import {
     Body,
     Controller,
+    DefaultValuePipe,
     Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    ParseIntPipe,
     Post,
     Put,
+    Query,
     UnauthorizedException,
     UploadedFiles,
     UseFilters,
@@ -21,12 +24,14 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiParam,
+    ApiQuery,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
 import { GetCurrentUser, Public } from '../common/decorators';
 import { HttpExceptionFilter, imageUploadOptions } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
+import { FilterQuery } from './interfaces';
 import { ProductService } from './product.service';
 import { Product } from './schema';
 
@@ -57,10 +62,49 @@ export class ProductController {
     @Public()
     @Get()
     @HttpCode(HttpStatus.OK)
+    @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
+    @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
+    @ApiQuery({ name: 'name', example: 'Asus VivoBook S15', required: false })
+    @ApiQuery({ name: 'category', example: 'Laptop', required: false })
+    @ApiQuery({ name: 'subCategory', example: 'Asus', required: false })
+    @ApiQuery({ name: 'startDate', example: '2022-12-24T19:09:05.925Z', required: false })
+    @ApiQuery({ name: 'endDate', example: '2022-12-24T19:09:05.925Z', required: false })
     @ApiOperation({ summary: 'Get all products' })
-    @ApiOkResponse({ type: [Product], isArray: true })
-    findAll(): Promise<Product[]> {
-        return this.productService.findAll();
+    @ApiOkResponse({ type: [Product] })
+    findAll(
+        @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
+        @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
+        @Query('name') name: string,
+        @Query('category') category: string,
+        @Query('subCategory') subCategory: string,
+        @Query('startDate') startDate: string,
+        @Query('endDate') endDate: string
+    ): Promise<Product[]> {
+        let filterQuery: FilterQuery = {};
+
+        if (name) {
+            filterQuery = { ...filterQuery, name };
+        }
+        if (category) {
+            filterQuery = { ...filterQuery, category };
+        }
+        if (subCategory) {
+            filterQuery = { ...filterQuery, subCategory };
+        }
+        if (startDate) {
+            filterQuery = {
+                ...filterQuery,
+                updatedAt: { ...filterQuery.updatedAt, $gte: startDate },
+            };
+        }
+        if (endDate) {
+            filterQuery = {
+                ...filterQuery,
+                updatedAt: { ...filterQuery.updatedAt, $lte: endDate },
+            };
+        }
+
+        return this.productService.findAll(page, size, filterQuery);
     }
 
     @Public()
