@@ -5,6 +5,7 @@ import { User, UserDocument } from '../auth/schema';
 import { Category, CategoryDocument } from '../category/schema';
 import { StorageService } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
+import { FilterQuery } from './interfaces';
 import { Product, ProductDocument } from './schema';
 
 @Injectable()
@@ -61,8 +62,11 @@ export class ProductService {
         return newProduct;
     }
 
-    async findAll(): Promise<Product[]> {
-        return await this.productModel.find();
+    async findAll(page: number, size: number, filterQuery: FilterQuery): Promise<Product[]> {
+        return await this.productModel
+            .find({ ...filterQuery })
+            .limit(size)
+            .skip((page - 1) * size);
     }
 
     async findOne(id: string | number): Promise<Product> {
