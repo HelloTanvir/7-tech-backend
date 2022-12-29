@@ -72,6 +72,7 @@ export class CategoryService {
 
         for (const product of products) {
             product.category = 'unknown';
+            product.subCategory = 'unknown';
             await product.save();
         }
 
