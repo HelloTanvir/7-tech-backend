@@ -154,7 +154,6 @@ export class CategoryService {
         categoryId: string | number,
         subCategoryId: string | number
     ): Promise<Category> {
-        // TODO: delete all products in this sub category
         const category = await this.categoryModel.findById(categoryId);
         if (!category) {
             throw new ForbiddenException('category does not exist');
