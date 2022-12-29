@@ -16,6 +16,7 @@ import {
     ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiParam,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
@@ -48,6 +49,7 @@ export class OrderController {
 
     @Get('/:orderId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'orderId', type: 'string' })
     @ApiOperation({ summary: 'Gel a single order' })
     @ApiOkResponse({ type: Order })
     findOne(@Param('orderId') orderId: string | number): Promise<Order> {
@@ -56,6 +58,7 @@ export class OrderController {
 
     @Put('/:orderId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'orderId', type: 'string' })
     @ApiOperation({ summary: 'Update an order' })
     @ApiOkResponse({ type: Order })
     @ApiBearerAuth()
@@ -73,6 +76,7 @@ export class OrderController {
 
     @Delete('/:orderId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'orderId', type: 'string' })
     @ApiOperation({ summary: 'Delete an order' })
     @ApiOkResponse({ type: Order })
     @ApiBearerAuth()

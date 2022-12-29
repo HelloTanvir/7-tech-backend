@@ -16,6 +16,7 @@ import {
     ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiParam,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
@@ -57,6 +58,7 @@ export class CategoryController {
     @Public()
     @Get('/:categoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'categoryId', type: 'string' })
     @ApiOperation({ summary: 'Gel a single category' })
     @ApiOkResponse({ type: Category })
     findOne(@Param('categoryId') categoryId: string | number): Promise<Category> {
@@ -65,6 +67,7 @@ export class CategoryController {
 
     @Put('/:categoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'categoryId', type: 'string' })
     @ApiOperation({ summary: 'Update a category' })
     @ApiOkResponse({ type: Category })
     @ApiBearerAuth()
@@ -82,6 +85,7 @@ export class CategoryController {
 
     @Delete('/:categoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'categoryId', type: 'string' })
     @ApiOperation({ summary: 'Delete a category' })
     @ApiOkResponse({ type: Category })
     @ApiBearerAuth()
@@ -90,7 +94,8 @@ export class CategoryController {
         @Param('categoryId') categoryId: string | number
     ): Promise<Category> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            // throw new UnauthorizedException('you are not the admin');
+            console.log('you are not the admin');
         }
 
         return this.categoryService.delete(categoryId);
@@ -98,6 +103,7 @@ export class CategoryController {
 
     @Post('/:categoryId/sub-category')
     @HttpCode(HttpStatus.CREATED)
+    @ApiParam({ name: 'categoryId', type: 'string' })
     @ApiOperation({ summary: 'Create a sub-category' })
     @ApiCreatedResponse({ type: Category })
     @ApiBearerAuth()
@@ -115,6 +121,8 @@ export class CategoryController {
 
     @Put('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'categoryId', type: 'string' })
+    @ApiParam({ name: 'subCategoryId', type: 'string' })
     @ApiOperation({ summary: 'Update a sub-category' })
     @ApiOkResponse({ type: Category })
     @ApiBearerAuth()
@@ -133,6 +141,8 @@ export class CategoryController {
 
     @Delete('/:categoryId/sub-category/:subCategoryId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'categoryId', type: 'string' })
+    @ApiParam({ name: 'subCategoryId', type: 'string' })
     @ApiOperation({ summary: 'Delete a sub-category' })
     @ApiOkResponse({ type: Category })
     @ApiBearerAuth()

@@ -55,6 +55,12 @@ export class ProductDto {
     @IsString()
     category: string;
 
+    @ApiProperty({ example: 'Macbook', description: 'Sub category of the product' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    subCategory?: string;
+
     @ApiProperty({
         example: ['good', 'better', 'best'],
         description: 'Tags of the product',

@@ -20,6 +20,7 @@ import {
     ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiParam,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
@@ -65,6 +66,7 @@ export class ProductController {
     @Public()
     @Get('/:productId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'productId', type: 'string' })
     @ApiOperation({ summary: 'Get a single product' })
     @ApiOkResponse({ type: Product })
     findOne(@Param('productId') productId: string | number): Promise<Product> {
@@ -73,6 +75,7 @@ export class ProductController {
 
     @Put('/:productId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'productId', type: 'string' })
     @ApiOperation({ summary: 'Update a product' })
     @ApiOkResponse({ type: Product })
     @ApiBearerAuth()
@@ -93,6 +96,7 @@ export class ProductController {
 
     @Delete('/:productId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'productId', type: 'string' })
     @ApiOperation({ summary: 'Delete a product' })
     @ApiOkResponse({ type: Product })
     @ApiBearerAuth()
@@ -109,6 +113,7 @@ export class ProductController {
 
     @Post('/:productId/review')
     @HttpCode(HttpStatus.CREATED)
+    @ApiParam({ name: 'productId', type: 'string' })
     @ApiOperation({ summary: 'Add a review' })
     @ApiCreatedResponse({ type: String })
     @ApiBearerAuth()
@@ -122,6 +127,8 @@ export class ProductController {
 
     @Delete('/:productId/review/:reviewId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'productId', type: 'string' })
+    @ApiParam({ name: 'reviewId', type: 'string' })
     @ApiOperation({ summary: 'Delete a review' })
     @ApiOkResponse({ type: String })
     @ApiBearerAuth()
@@ -135,6 +142,7 @@ export class ProductController {
 
     @Post('/:productId/details')
     @HttpCode(HttpStatus.CREATED)
+    @ApiParam({ name: 'productId', type: 'string' })
     @ApiOperation({ summary: 'Add details' })
     @ApiCreatedResponse({ type: String })
     @ApiBearerAuth()
@@ -152,6 +160,8 @@ export class ProductController {
 
     @Delete('/:productId/details/:detailsId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'productId', type: 'string' })
+    @ApiParam({ name: 'detailsId', type: 'string' })
     @ApiOperation({ summary: 'Delete details' })
     @ApiOkResponse({ type: String })
     @ApiBearerAuth()
@@ -169,6 +179,7 @@ export class ProductController {
 
     @Post('/:productId/information')
     @HttpCode(HttpStatus.CREATED)
+    @ApiParam({ name: 'productId', type: 'string' })
     @ApiOperation({ summary: 'Add information' })
     @ApiCreatedResponse({ type: String })
     @ApiBearerAuth()
@@ -186,6 +197,8 @@ export class ProductController {
 
     @Delete('/:productId/information/:informationId')
     @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'productId', type: 'string' })
+    @ApiParam({ name: 'informationId', type: 'string' })
     @ApiOperation({ summary: 'Delete information' })
     @ApiOkResponse({ type: String })
     @ApiBearerAuth()
