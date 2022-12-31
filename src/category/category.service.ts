@@ -44,18 +44,20 @@ export class CategoryService {
             throw new ForbiddenException('category does not exist');
         }
 
-        if (!dto.name) {
+        if (!dto.name || !dto.isFeatured || !dto.index) {
             throw new ForbiddenException('nothing to update');
         }
 
-        // update category of products
-        const products = await this.productModel.find({
-            category: category.name,
-        });
+        // update category of products if category name is changed
+        if (dto.name !== category.name) {
+            const products = await this.productModel.find({
+                category: category.name,
+            });
 
-        for (const product of products) {
-            product.category = dto.name;
-            await product.save();
+            for (const product of products) {
+                product.category = dto.name;
+                await product.save();
+            }
         }
 
         return await this.categoryModel.findByIdAndUpdate(id, dto, { new: true });
