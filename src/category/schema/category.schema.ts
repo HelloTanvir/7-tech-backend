@@ -17,6 +17,14 @@ export class Category {
         default: [],
     })
     subCategories: SubCategory[];
+
+    @ApiProperty()
+    @Prop({ default: false })
+    isFeatured: boolean;
+
+    @ApiProperty()
+    @Prop({ required: [true, 'Category index is required'] })
+    index: boolean;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

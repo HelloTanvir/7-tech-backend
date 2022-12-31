@@ -1,6 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+    IsArray,
+    IsBoolean,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    // eslint-disable-next-line prettier/prettier
+    ValidateNested
+} from 'class-validator';
 
 class SubCategory {
     @ApiProperty({ example: 'Macbook', description: 'Title of the sub-category' })
@@ -34,4 +43,15 @@ export class CategoryDto {
     @ValidateNested({ each: true })
     @Type(() => SubCategory)
     subCategories: SubCategory[];
+
+    @ApiProperty({ example: false, description: 'Is the category featured?' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsBoolean()
+    isFeatured: boolean;
+
+    @ApiProperty({ example: 1, description: 'Index of the category' })
+    @IsNotEmpty()
+    @IsNumber()
+    index: number;
 }
