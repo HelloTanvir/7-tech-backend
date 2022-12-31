@@ -24,7 +24,7 @@ export class Category {
 
     @ApiProperty()
     @Prop({ required: [true, 'Category index is required'] })
-    index: boolean;
+    index: number;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
