@@ -72,7 +72,7 @@ export class BannerController {
     @Get()
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Get banners' })
-    @ApiOkResponse({ type: [Banner], isArray: true })
+    @ApiOkResponse({ type: [Banner] })
     findAll(): Promise<Banner[]> {
         return this.bannerService.findAll();
     }

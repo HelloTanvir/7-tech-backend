@@ -70,7 +70,6 @@ export class ProductUpdateDto {
     @ApiProperty({
         example: ['good', 'better', 'best'],
         description: 'Tags of the product',
-        isArray: true,
     })
     @IsOptional()
     @IsNotEmpty()
@@ -102,7 +101,7 @@ export class ProductUpdateDto {
     @IsString()
     imageAlt: string;
 
-    @ApiProperty({ type: [Detail], isArray: true, example: [{ title: '2 years of warranty' }] })
+    @ApiProperty({ type: [Detail], example: [{ title: '2 years of warranty' }] })
     @IsOptional()
     @IsNotEmpty()
     @Transform(
@@ -123,7 +122,6 @@ export class ProductUpdateDto {
 
     @ApiProperty({
         type: [Information],
-        isArray: true,
         example: [{ title: 'RAM', description: '64 GB' }],
     })
     @IsOptional()
