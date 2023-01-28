@@ -78,10 +78,12 @@ export class ProductService {
 
         // find featured products for each featured category
         for (const category of featuredCategories) {
-            const products = await this.productModel.find({
-                category: category.name,
-                isFeatured: true,
-            });
+            const products = await this.productModel
+                .find({
+                    category: category.name,
+                    isFeatured: true,
+                })
+                .limit(10);
 
             response.push({
                 tagline: category.name,
