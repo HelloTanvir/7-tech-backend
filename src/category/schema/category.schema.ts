@@ -23,6 +23,10 @@ export class Category {
     isFeatured: boolean;
 
     @ApiProperty()
+    @Prop({ default: '' })
+    tagline: string;
+
+    @ApiProperty()
     @Prop({ required: [true, 'Category index is required'] })
     index: number;
 }

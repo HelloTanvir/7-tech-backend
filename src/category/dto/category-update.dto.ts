@@ -14,6 +14,12 @@ export class CategoryUpdateDto {
     @IsBoolean()
     isFeatured: boolean;
 
+    @ApiProperty({ example: 'Made For Gaming', description: 'tagline of the category' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    tagline: string;
+
     @ApiProperty({ example: 1, description: 'Index of the category' })
     @IsOptional()
     @IsNotEmpty()

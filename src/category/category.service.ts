@@ -24,6 +24,11 @@ export class CategoryService {
                 index === self.findIndex((t) => t.name === subCategory.name)
         );
 
+        // set category name as tagline if tagline is not provided for featured category
+        if (dto.isFeatured && !dto.tagline) {
+            dto.tagline = dto.name;
+        }
+
         const newCategory = new this.categoryModel(dto);
         await newCategory.save();
 
@@ -44,7 +49,7 @@ export class CategoryService {
             throw new ForbiddenException('category does not exist');
         }
 
-        if (!dto.name || !dto.isFeatured || !dto.index) {
+        if (!dto.name || !dto.isFeatured || !dto.tagline || !dto.index) {
             throw new ForbiddenException('nothing to update');
         }
 
