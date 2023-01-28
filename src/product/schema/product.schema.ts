@@ -53,15 +53,15 @@ export class Product {
     @Prop()
     subCategory?: string;
 
-    @ApiProperty({ type: [String], isArray: true })
+    @ApiProperty({ type: [String] })
     @Prop({ type: [String], required: [true, 'Product images are required'] })
     images: string[];
 
-    @ApiProperty({ type: [String], isArray: true })
+    @ApiProperty({ type: [String] })
     @Prop({ type: [String], required: [true, 'Product image keys are required'] })
     keys: string[];
 
-    @ApiProperty({ type: [String], isArray: true })
+    @ApiProperty({ type: [String] })
     @Prop({ type: [String], default: [] })
     tags: string[];
 
@@ -73,15 +73,15 @@ export class Product {
     @Prop({ default: 'Product' })
     imageAlt: string;
 
-    @ApiProperty({ type: [Detail], isArray: true })
+    @ApiProperty({ type: [Detail] })
     @Prop({ type: [DetailSchema], default: [] })
     details: Detail[];
 
-    @ApiProperty({ type: [Information], isArray: true })
+    @ApiProperty({ type: [Information] })
     @Prop({ type: [InformationSchema], default: [] })
     information: Information[];
 
-    @ApiProperty({ type: [Review], isArray: true })
+    @ApiProperty({ type: [Review] })
     @Prop({ type: [ReviewSchema], default: [] })
     reviews: Review[];
 }

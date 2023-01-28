@@ -70,7 +70,11 @@ export class ProductService {
     }
 
     async findOne(id: string | number): Promise<Product> {
-        return await this.productModel.findById(id);
+        try {
+            return await this.productModel.findById(id);
+        } catch (error) {
+            throw new ForbiddenException('product does not exist');
+        }
     }
 
     async update(
