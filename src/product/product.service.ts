@@ -7,6 +7,7 @@ import { StorageService } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { FilterQuery } from './interfaces';
 import { Product, ProductDocument } from './schema';
+import { FeaturedProductsOnHome } from './types';
 
 @Injectable()
 export class ProductService {
@@ -67,6 +68,28 @@ export class ProductService {
             .find({ ...filterQuery })
             .limit(size)
             .skip((page - 1) * size);
+    }
+
+    async findFeaturedOnHome(): Promise<FeaturedProductsOnHome[]> {
+        const response = [];
+
+        // find featured categories
+        const featuredCategories = await this.categoryModel.find({ isFeatured: true });
+
+        // find featured products for each featured category
+        for (const category of featuredCategories) {
+            const products = await this.productModel.find({
+                category: category.name,
+                isFeatured: true,
+            });
+
+            response.push({
+                tagline: category.name,
+                products: products,
+            });
+        }
+
+        return response;
     }
 
     async findOne(id: string | number): Promise<Product> {

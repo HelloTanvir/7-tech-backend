@@ -34,6 +34,7 @@ import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } f
 import { FilterQuery } from './interfaces';
 import { ProductService } from './product.service';
 import { Product } from './schema';
+import { FeaturedProductsOnHome } from './types';
 
 @ApiTags('Products')
 @Controller('products')
@@ -105,6 +106,15 @@ export class ProductController {
         }
 
         return this.productService.findAll(page, size, filterQuery);
+    }
+
+    @Public()
+    @Get('/featured-on-home')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Get all featured products for homepage' })
+    @ApiOkResponse({ type: [FeaturedProductsOnHome] })
+    findFeaturedOnHome(): Promise<FeaturedProductsOnHome[]> {
+        return this.productService.findFeaturedOnHome();
     }
 
     @Public()
