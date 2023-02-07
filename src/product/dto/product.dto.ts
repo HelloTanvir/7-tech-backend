@@ -145,4 +145,25 @@ export class ProductDto {
     // @ValidateNested({ each: true })
     @Type(() => Information)
     information: Information[];
+
+    @ApiProperty({
+        example: ['de6e1f616161fef', 'dw1d6e161f6e1fe', 'sw616wf6f1616ef'],
+        description: 'Product ids related to this product',
+    })
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @Type(() => String)
+    relatedProducts: string[];
 }

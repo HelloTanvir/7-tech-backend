@@ -88,6 +88,10 @@ export class Product {
     @ApiProperty({ type: [Review] })
     @Prop({ type: [ReviewSchema], default: [] })
     reviews: Review[];
+
+    @ApiProperty({ type: [String] })
+    @Prop({ type: [String], default: [] })
+    relatedProducts: string[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
