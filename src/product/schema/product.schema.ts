@@ -73,6 +73,10 @@ export class Product {
     @Prop({ default: 'Product' })
     imageAlt: string;
 
+    @ApiProperty()
+    @Prop({ default: '' })
+    shortDescription: string;
+
     @ApiProperty({ type: [Detail] })
     @Prop({ type: [DetailSchema], default: [] })
     details: Detail[];
