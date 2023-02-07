@@ -71,7 +71,11 @@ export class ProductService {
     }
 
     async findFeaturedOnHome(): Promise<FeaturedProductsOnHome[]> {
-        const response = [];
+        const response: {
+            index: number;
+            tagline: string;
+            products: Product[];
+        }[] = [];
 
         // find featured categories
         const featuredCategories = await this.categoryModel.find({ isFeatured: true });
@@ -86,12 +90,20 @@ export class ProductService {
                 .limit(10);
 
             response.push({
-                tagline: category.name,
+                index: category.index,
+                tagline: category.tagline || category.name,
                 products: products,
             });
         }
 
-        return response;
+        // sort by index
+        response.sort((a, b) => a.index - b.index);
+
+        // return the response without index
+        return response.map((item) => ({
+            tagline: item.tagline,
+            products: item.products,
+        }));
     }
 
     async findOne(id: string | number): Promise<Product> {
