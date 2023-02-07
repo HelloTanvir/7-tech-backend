@@ -95,6 +95,16 @@ export class ProductDto {
     @IsString()
     imageAlt: string;
 
+    @ApiProperty({
+        example: 'This product has a market value. But you? ha ha ha',
+        description: 'Short description of the product',
+        required: false,
+    })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    shortDescription: string;
+
     @ApiProperty({ type: [Detail], example: [{ title: '2 years of warranty' }] })
     @IsOptional()
     @IsNotEmpty()
