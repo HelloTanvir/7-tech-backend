@@ -257,6 +257,7 @@ export class ProductService {
 
         product.details[product.details.length] = {
             title: dto.title,
+            description: dto.description,
         };
 
         await product.save();
