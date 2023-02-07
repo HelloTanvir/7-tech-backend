@@ -1,13 +1,16 @@
 import {
     Body,
     Controller,
+    DefaultValuePipe,
     Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    ParseIntPipe,
     Post,
     Put,
+    Query,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
@@ -17,6 +20,7 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiParam,
+    ApiQuery,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
@@ -49,10 +53,15 @@ export class CategoryController {
     @Public()
     @Get()
     @HttpCode(HttpStatus.OK)
+    @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
+    @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
     @ApiOperation({ summary: 'Gel all categories' })
     @ApiOkResponse({ type: [Category] })
-    findAll(): Promise<Category[]> {
-        return this.categoryService.findAll();
+    findAll(
+        @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
+        @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number
+    ): Promise<Category[]> {
+        return this.categoryService.findAll(page, size);
     }
 
     @Public()
