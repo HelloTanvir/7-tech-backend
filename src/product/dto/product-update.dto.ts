@@ -43,11 +43,41 @@ export class ProductUpdateDto {
     @IsString()
     code: string;
 
-    @ApiProperty({ example: '250000', description: 'Price of the product' })
+    @ApiProperty({ example: '250000', description: 'Regular Price of the product' })
     @IsOptional()
     @IsNotEmpty()
-    @IsNumberString({ message: 'Product price must be a number' })
-    price: number;
+    @IsNumberString({ message: 'Product regular price must be a number' })
+    regularPrice: number;
+
+    @ApiProperty({ example: '250000', description: 'Online Price of the product' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product online price must be a number' })
+    onlinePrice: number;
+
+    @ApiProperty({ example: '250000', description: 'Offer Price of the product' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsNumberString({ message: 'Product offer price must be a number' })
+    offerPrice: number;
+
+    @ApiProperty({
+        example: '2022-12-24T19:09:05.925Z',
+        description: 'Start date of the offer price of the product',
+    })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    offerStartDate: string;
+
+    @ApiProperty({
+        example: '2022-12-24T19:09:05.925Z',
+        description: 'End date of the offer price of the product',
+    })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    offerEndDate: string;
 
     @ApiProperty({ example: '73', description: 'Quantity of the product' })
     @IsOptional()
@@ -101,6 +131,16 @@ export class ProductUpdateDto {
     @IsString()
     imageAlt: string;
 
+    @ApiProperty({
+        example: 'This product has a market value. But you? ha ha ha',
+        description: 'Short description of the product',
+        required: false,
+    })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    shortDescription: string;
+
     @ApiProperty({ type: [Detail], example: [{ title: '2 years of warranty' }] })
     @IsOptional()
     @IsNotEmpty()
@@ -141,4 +181,25 @@ export class ProductUpdateDto {
     @ValidateNested({ each: true })
     @Type(() => Information)
     information: Information[];
+
+    @ApiProperty({
+        example: ['de6e1f616161fef', 'dw1d6e161f6e1fe', 'sw616wf6f1616ef'],
+        description: 'Product ids related to this product',
+    })
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @Type(() => String)
+    relatedProducts: string[];
 }

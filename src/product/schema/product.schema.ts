@@ -19,10 +19,32 @@ export class Product {
 
     @ApiProperty()
     @Prop({
-        required: [true, 'Product price is required'],
-        min: [0, 'Product price must be greater than 0'],
+        required: [true, 'Product regular price is required'],
+        min: [0, 'Product regular price must be greater than 0'],
     })
-    price: number;
+    regularPrice: number;
+
+    @ApiProperty()
+    @Prop({
+        required: [true, 'Product online price is required'],
+        min: [0, 'Product online price must be greater than 0'],
+    })
+    onlinePrice: number;
+
+    @ApiProperty()
+    @Prop({
+        min: [0, 'Product offer price must be greater than 0'],
+        default: 0,
+    })
+    offerPrice: number;
+
+    @ApiProperty()
+    @Prop({ default: Date.now })
+    offerStartDate: string;
+
+    @ApiProperty()
+    @Prop({ default: Date.now })
+    offerEndDate: string;
 
     @ApiProperty()
     @Prop({
@@ -73,6 +95,10 @@ export class Product {
     @Prop({ default: 'Product' })
     imageAlt: string;
 
+    @ApiProperty()
+    @Prop({ default: '' })
+    shortDescription: string;
+
     @ApiProperty({ type: [Detail] })
     @Prop({ type: [DetailSchema], default: [] })
     details: Detail[];
@@ -84,6 +110,10 @@ export class Product {
     @ApiProperty({ type: [Review] })
     @Prop({ type: [ReviewSchema], default: [] })
     reviews: Review[];
+
+    @ApiProperty({ type: [String] })
+    @Prop({ type: [String], default: [] })
+    relatedProducts: string[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

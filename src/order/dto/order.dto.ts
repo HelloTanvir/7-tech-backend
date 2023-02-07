@@ -60,11 +60,11 @@ export class OrderDto {
 
     @ApiProperty({
         example: 'cash-on-delivery',
-        description: 'Status of the order',
-        enum: ['bkash', 'cash-on-delivery'],
+        description: 'Payment method of the order',
+        enum: ['online', 'cash-on-delivery'],
     })
     @IsNotEmpty()
     @IsString()
-    @IsIn(['bkash', 'cash-on-delivery'])
+    @IsIn(['online', 'cash-on-delivery'])
     payment_method: string;
 }

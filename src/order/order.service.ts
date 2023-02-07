@@ -23,10 +23,23 @@ export class OrderService {
                 throw new ForbiddenException(`invalid product id: ${product.productId}`);
             }
 
-            const productPrice = savedProduct.price;
-            const productQuantity = product.quantity;
+            const individualCart = {
+                // default price is the regular price
+                productPrice: savedProduct.regularPrice,
+                productQuantity: product.quantity,
+            };
 
-            total += productPrice * productQuantity;
+            // if product has a discount, use the discounted price
+            if (savedProduct.offerPrice && savedProduct.offerEndDate > Date.now().toString()) {
+                individualCart.productPrice = savedProduct.offerPrice;
+            }
+
+            // if product has an online price, use the online price
+            if (dto.payment_method === 'online' && savedProduct.onlinePrice) {
+                individualCart.productPrice = savedProduct.onlinePrice;
+            }
+
+            total += individualCart.productPrice * individualCart.productQuantity;
         }
 
         const order = new this.orderModel({
