@@ -19,10 +19,32 @@ export class Product {
 
     @ApiProperty()
     @Prop({
-        required: [true, 'Product price is required'],
-        min: [0, 'Product price must be greater than 0'],
+        required: [true, 'Product regular price is required'],
+        min: [0, 'Product regular price must be greater than 0'],
     })
-    price: number;
+    regularPrice: number;
+
+    @ApiProperty()
+    @Prop({
+        required: [true, 'Product online price is required'],
+        min: [0, 'Product online price must be greater than 0'],
+    })
+    onlinePrice: number;
+
+    @ApiProperty()
+    @Prop({
+        min: [0, 'Product offer price must be greater than 0'],
+        default: 0,
+    })
+    offerPrice: number;
+
+    @ApiProperty()
+    @Prop({ default: Date.now })
+    offerStartDate: string;
+
+    @ApiProperty()
+    @Prop({ default: Date.now })
+    offerEndDate: string;
 
     @ApiProperty()
     @Prop({
