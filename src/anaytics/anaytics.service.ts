@@ -18,7 +18,7 @@ export class AnayticsService {
 
     async findAll(): Promise<AllAnalyticsResponse> {
         const totalProducts = await this.productModel.countDocuments();
-        const totalOutOfStockProducts = await this.productModel.countDocuments(); //TODO: add filter for out of stock products
+        const totalOutOfStockProducts = await this.productModel.countDocuments({ inStock: false });
         const totalCategories = await this.categoryModel.countDocuments();
         const totalOrders = await this.orderModel.countDocuments();
         const totalUsers = await this.userModel.countDocuments();
