@@ -28,6 +28,7 @@ import { GetCurrentUser, Public } from '../common/decorators';
 import { CategoryService } from './category.service';
 import { CategoryDto, CategoryUpdateDto, SubCategoryDto } from './dto';
 import { Category } from './schema';
+import { AllCategoriesResponse } from './types';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -55,13 +56,15 @@ export class CategoryController {
     @HttpCode(HttpStatus.OK)
     @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
     @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
+    @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
     @ApiOperation({ summary: 'Gel all categories' })
-    @ApiOkResponse({ type: [Category] })
+    @ApiOkResponse({ type: AllCategoriesResponse })
     findAll(
         @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
-        @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number
-    ): Promise<Category[]> {
-        return this.categoryService.findAll(page, size);
+        @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
+        @Query('searchQuery') searchQuery: string
+    ): Promise<AllCategoriesResponse> {
+        return this.categoryService.findAll(page, size, searchQuery);
     }
 
     @Public()

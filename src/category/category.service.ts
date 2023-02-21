@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Product, ProductDocument } from '../product/schema';
 import { CategoryDto, CategoryUpdateDto, SubCategoryDto } from './dto';
 import { Category, CategoryDocument } from './schema';
+import { AllCategoriesResponse } from './types';
 
 @Injectable()
 export class CategoryService {
@@ -35,11 +36,36 @@ export class CategoryService {
         return newCategory;
     }
 
-    async findAll(page: number, size: number): Promise<Category[]> {
-        return await this.categoryModel
+    async findAll(page: number, size: number, searchQuery: string): Promise<AllCategoriesResponse> {
+        if (searchQuery) {
+            const categories = await this.categoryModel
+                .find({
+                    $or: [
+                        { name: { $regex: searchQuery, $options: 'i' } },
+                        { tagline: { $regex: searchQuery, $options: 'i' } },
+                    ],
+                })
+                .limit(size)
+                .skip((page - 1) * size);
+
+            const count = await this.categoryModel.countDocuments({
+                $or: [
+                    { name: { $regex: searchQuery, $options: 'i' } },
+                    { tagline: { $regex: searchQuery, $options: 'i' } },
+                ],
+            });
+
+            return { count, categories };
+        }
+
+        const categories = await this.categoryModel
             .find()
             .limit(size)
             .skip((page - 1) * size);
+
+        const count = await this.categoryModel.countDocuments();
+
+        return { count, categories };
     }
 
     async findOne(id: string | number): Promise<Category> {
