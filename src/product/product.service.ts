@@ -7,7 +7,7 @@ import { StorageService } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { FilterQuery } from './interfaces';
 import { Product, ProductDocument } from './schema';
-import { FeaturedProductsOnHome } from './types';
+import { AllProductsResponse, FeaturedProductsOnHome } from './types';
 
 @Injectable()
 export class ProductService {
@@ -68,10 +68,7 @@ export class ProductService {
         size: number,
         searchQuery: string,
         filterQuery: FilterQuery
-    ): Promise<{
-        count: number;
-        products: Product[];
-    }> {
+    ): Promise<AllProductsResponse> {
         if (searchQuery) {
             const products = await this.productModel
                 .find({
@@ -98,8 +95,6 @@ export class ProductService {
 
             return { count, products };
         }
-
-        console.log(filterQuery);
 
         const products = await this.productModel
             .find({ ...filterQuery })

@@ -72,7 +72,7 @@ export class ProductController {
     @ApiQuery({ name: 'endDate', example: '2022-12-24T19:09:05.925Z', required: false })
     @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
     @ApiOperation({ summary: 'Get all products' })
-    @ApiOkResponse({ type: [AllProductsResponse] })
+    @ApiOkResponse({ type: AllProductsResponse })
     findAll(
         @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
         @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
@@ -82,10 +82,7 @@ export class ProductController {
         @Query('startDate') startDate: string,
         @Query('endDate') endDate: string,
         @Query('searchQuery') searchQuery: string
-    ): Promise<{
-        count: number;
-        products: Product[];
-    }> {
+    ): Promise<AllProductsResponse> {
         let filterQuery: FilterQuery = {};
 
         if (name) {
