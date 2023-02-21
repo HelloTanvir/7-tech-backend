@@ -118,6 +118,13 @@ export class ProductDto {
     @IsBoolean()
     isFeatured: boolean;
 
+    @ApiProperty({ example: true, description: 'Is the product in stock?' })
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(({ value }) => value === 'true', { toClassOnly: true })
+    @IsBoolean()
+    inStock: boolean;
+
     @ApiProperty({ example: 'Laptop', description: 'Alt of the product images', required: false })
     @IsOptional()
     @IsNotEmpty()
