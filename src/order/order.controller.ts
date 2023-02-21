@@ -1,13 +1,16 @@
 import {
     Body,
     Controller,
+    DefaultValuePipe,
     Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    ParseIntPipe,
     Post,
     Put,
+    Query,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
@@ -17,6 +20,7 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiParam,
+    ApiQuery,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
@@ -24,6 +28,7 @@ import { GetCurrentUser, Public } from '../common/decorators';
 import { OrderDto, OrderUpdateDto } from './dto';
 import { OrderService } from './order.service';
 import { Order } from './schema';
+import { AllOrdersResponse } from './types';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -41,10 +46,17 @@ export class OrderController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
+    @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
+    @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
+    @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
     @ApiOperation({ summary: 'Gel all orders' })
     @ApiOkResponse({ type: [Order] })
-    findAll(): Promise<Order[]> {
-        return this.orderService.findAll();
+    findAll(
+        @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
+        @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
+        @Query('searchQuery') searchQuery: string
+    ): Promise<AllOrdersResponse> {
+        return this.orderService.findAll(page, size, searchQuery);
     }
 
     @Get('/:orderId')
