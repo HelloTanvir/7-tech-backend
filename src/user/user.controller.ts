@@ -1,19 +1,30 @@
 import {
     Body,
     Controller,
+    DefaultValuePipe,
     Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    ParseIntPipe,
     Put,
+    Query,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiOkResponse,
+    ApiOperation,
+    ApiParam,
+    ApiQuery,
+    ApiTags,
+} from '@nestjs/swagger';
 import { User } from '../auth/schema';
 import { GetCurrentUser } from '../common/decorators';
 import { ProfileUpdateDto } from './dto';
+import { AllUsersResponse } from './types';
 import { UserService } from './user.service';
 
 @ApiTags('User')
@@ -23,15 +34,23 @@ export class UserController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
+    @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
+    @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
+    @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
     @ApiOperation({ summary: 'Get all users' })
-    @ApiOkResponse({ type: [User] })
+    @ApiOkResponse({ type: AllUsersResponse })
     @ApiBearerAuth()
-    findAll(@GetCurrentUser('isAdmin') isAdmin: boolean): Promise<User[]> {
+    findAll(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
+        @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
+        @Query('searchQuery') searchQuery: string
+    ): Promise<AllUsersResponse> {
         if (!isAdmin) {
             throw new UnauthorizedException('you are not the admin');
         }
 
-        return this.userService.findAll();
+        return this.userService.findAll(page, size, searchQuery);
     }
 
     @Get('/:userId')
