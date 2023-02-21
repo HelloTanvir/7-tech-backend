@@ -11,6 +11,7 @@ import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { MongoExceptionFilter } from './utils';
+import { AnayticsModule } from './anaytics/anaytics.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { MongoExceptionFilter } from './utils';
         OrderModule,
         BannerModule,
         UserModule,
+        AnayticsModule,
     ],
     providers: [
         {
