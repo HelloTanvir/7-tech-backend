@@ -7,7 +7,7 @@ import { StorageService } from '../utils';
 import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } from './dto';
 import { FilterQuery } from './interfaces';
 import { Product, ProductDocument } from './schema';
-import { FeaturedProductsOnHome } from './types';
+import { AllProductsResponse, FeaturedProductsOnHome } from './types';
 
 @Injectable()
 export class ProductService {
@@ -63,11 +63,47 @@ export class ProductService {
         return newProduct;
     }
 
-    async findAll(page: number, size: number, filterQuery: FilterQuery): Promise<Product[]> {
-        return await this.productModel
+    async findAll(
+        page: number,
+        size: number,
+        searchQuery: string,
+        filterQuery: FilterQuery
+    ): Promise<AllProductsResponse> {
+        if (searchQuery) {
+            const products = await this.productModel
+                .find({
+                    $or: [
+                        { name: { $regex: searchQuery, $options: 'i' } },
+                        { code: { $regex: searchQuery, $options: 'i' } },
+                        { category: { $regex: searchQuery, $options: 'i' } },
+                        { subCategory: { $regex: searchQuery, $options: 'i' } },
+                        { shortDescription: { $regex: searchQuery, $options: 'i' } },
+                    ],
+                })
+                .limit(size)
+                .skip((page - 1) * size);
+
+            const count = await this.productModel.countDocuments({
+                $or: [
+                    { name: { $regex: searchQuery, $options: 'i' } },
+                    { code: { $regex: searchQuery, $options: 'i' } },
+                    { category: { $regex: searchQuery, $options: 'i' } },
+                    { subCategory: { $regex: searchQuery, $options: 'i' } },
+                    { shortDescription: { $regex: searchQuery, $options: 'i' } },
+                ],
+            });
+
+            return { count, products };
+        }
+
+        const products = await this.productModel
             .find({ ...filterQuery })
             .limit(size)
             .skip((page - 1) * size);
+
+        const count = await this.productModel.countDocuments({ ...filterQuery });
+
+        return { count, products };
     }
 
     async findFeaturedOnHome(): Promise<FeaturedProductsOnHome[]> {

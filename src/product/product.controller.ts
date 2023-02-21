@@ -34,7 +34,7 @@ import { DetailsDto, InformationDto, ProductDto, ProductUpdateDto, ReviewDto } f
 import { FilterQuery } from './interfaces';
 import { ProductService } from './product.service';
 import { Product } from './schema';
-import { FeaturedProductsOnHome } from './types';
+import { AllProductsResponse, FeaturedProductsOnHome } from './types';
 
 @ApiTags('Products')
 @Controller('products')
@@ -70,8 +70,9 @@ export class ProductController {
     @ApiQuery({ name: 'subCategory', example: 'Asus', required: false })
     @ApiQuery({ name: 'startDate', example: '2022-12-24T19:09:05.925Z', required: false })
     @ApiQuery({ name: 'endDate', example: '2022-12-24T19:09:05.925Z', required: false })
+    @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
     @ApiOperation({ summary: 'Get all products' })
-    @ApiOkResponse({ type: [Product] })
+    @ApiOkResponse({ type: AllProductsResponse })
     findAll(
         @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
         @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
@@ -79,8 +80,9 @@ export class ProductController {
         @Query('category') category: string,
         @Query('subCategory') subCategory: string,
         @Query('startDate') startDate: string,
-        @Query('endDate') endDate: string
-    ): Promise<Product[]> {
+        @Query('endDate') endDate: string,
+        @Query('searchQuery') searchQuery: string
+    ): Promise<AllProductsResponse> {
         let filterQuery: FilterQuery = {};
 
         if (name) {
@@ -105,7 +107,7 @@ export class ProductController {
             };
         }
 
-        return this.productService.findAll(page, size, filterQuery);
+        return this.productService.findAll(page, size, searchQuery, filterQuery);
     }
 
     @Public()
