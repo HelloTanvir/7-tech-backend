@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Product, ProductDocument } from '../product/schema';
 import { OrderDto, OrderUpdateDto } from './dto';
 import { Order, OrderDocument } from './schema';
+import { AllOrdersResponse } from './types';
 
 @Injectable()
 export class OrderService {
@@ -52,8 +53,48 @@ export class OrderService {
         return order;
     }
 
-    async findAll(): Promise<Order[]> {
-        return await this.orderModel.find();
+    async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
+        if (searchQuery) {
+            const orders = await this.orderModel
+                .find({
+                    $or: [
+                        { customer_name: { $regex: searchQuery, $options: 'i' } },
+                        { customer_number: { $regex: searchQuery, $options: 'i' } },
+                        { address: { $regex: searchQuery, $options: 'i' } },
+                        { city: { $regex: searchQuery, $options: 'i' } },
+                        { zone: { $regex: searchQuery, $options: 'i' } },
+                        { payment_method: { $regex: searchQuery, $options: 'i' } },
+                        { status: { $regex: searchQuery, $options: 'i' } },
+                        { total: { $regex: searchQuery, $options: 'i' } },
+                    ],
+                })
+                .limit(size)
+                .skip((page - 1) * size);
+
+            const count = await this.orderModel.countDocuments({
+                $or: [
+                    { customer_name: { $regex: searchQuery, $options: 'i' } },
+                    { customer_number: { $regex: searchQuery, $options: 'i' } },
+                    { address: { $regex: searchQuery, $options: 'i' } },
+                    { city: { $regex: searchQuery, $options: 'i' } },
+                    { zone: { $regex: searchQuery, $options: 'i' } },
+                    { payment_method: { $regex: searchQuery, $options: 'i' } },
+                    { status: { $regex: searchQuery, $options: 'i' } },
+                    { total: { $regex: searchQuery, $options: 'i' } },
+                ],
+            });
+
+            return { count, orders };
+        }
+
+        const orders = await this.orderModel
+            .find()
+            .limit(size)
+            .skip((page - 1) * size);
+
+        const count = await this.orderModel.countDocuments();
+
+        return { count, orders };
     }
 
     async findOne(id: string | number): Promise<Order> {
