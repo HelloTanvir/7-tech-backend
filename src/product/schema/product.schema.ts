@@ -96,6 +96,10 @@ export class Product {
     inStock: boolean;
 
     @ApiProperty()
+    @Prop({ default: true })
+    isActive: boolean;
+
+    @ApiProperty()
     @Prop({ default: 'Product' })
     imageAlt: string;
 
