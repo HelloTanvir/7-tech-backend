@@ -24,6 +24,17 @@ export class OrderService {
                 throw new ForbiddenException(`invalid product id: ${product.productId}`);
             }
 
+            // if product quantity is less than the quantity in the cart, throw an error
+            if (savedProduct.quantity < product.quantity) {
+                throw new ForbiddenException(
+                    `product ${product.productId} quantity is not enough, only ${savedProduct.quantity} left`
+                );
+            }
+
+            // decrease the quantity of the product
+            savedProduct.quantity -= product.quantity;
+            await savedProduct.save();
+
             const individualCart = {
                 // default price is the regular price
                 productPrice: savedProduct.regularPrice,
