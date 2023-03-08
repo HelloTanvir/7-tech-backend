@@ -144,7 +144,20 @@ export class ProductService {
 
     async findOne(id: string | number): Promise<Product> {
         try {
-            return await this.productModel.findById(id);
+            const product = (await this.productModel.findById(id)).toObject();
+
+            // populate related products
+            const relatedProducts: Product[] = [];
+            for (const relatedProductId of product.relatedProducts) {
+                const relatedProduct = await this.productModel.findById(relatedProductId);
+                if (relatedProduct) {
+                    relatedProducts.push(relatedProduct);
+                }
+            }
+
+            (product.relatedProducts as unknown as Product[]) = relatedProducts;
+
+            return product as unknown as Product;
         } catch (error) {
             throw new ForbiddenException('product does not exist');
         }
