@@ -6,4 +6,8 @@ export interface FilterQuery {
         $gte?: string;
         $lte?: string;
     };
+    regularPrice?: {
+        $gte?: number;
+        $lte?: number;
+    };
 }
