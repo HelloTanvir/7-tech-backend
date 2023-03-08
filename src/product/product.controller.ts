@@ -81,7 +81,9 @@ export class ProductController {
         @Query('subCategory') subCategory: string,
         @Query('startDate') startDate: string,
         @Query('endDate') endDate: string,
-        @Query('searchQuery') searchQuery: string
+        @Query('searchQuery') searchQuery: string,
+        @Query('lowerPrice', new DefaultValuePipe(1), new ParseIntPipe()) lowerPrice: number,
+        @Query('higherPrice', new DefaultValuePipe(10000), new ParseIntPipe()) higherPrice: number
     ): Promise<AllProductsResponse> {
         let filterQuery: FilterQuery = {};
 
@@ -105,6 +107,12 @@ export class ProductController {
                 ...filterQuery,
                 updatedAt: { ...filterQuery.updatedAt, $lte: endDate },
             };
+        }
+        if (lowerPrice) {
+            filterQuery = { ...filterQuery, regularPrice: { $gte: lowerPrice } };
+        }
+        if (higherPrice) {
+            filterQuery = { ...filterQuery, regularPrice: { $lte: higherPrice } };
         }
 
         return this.productService.findAll(page, size, searchQuery, filterQuery);
