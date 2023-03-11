@@ -109,7 +109,20 @@ export class OrderService {
     }
 
     async findOne(id: string | number): Promise<Order> {
-        return await this.orderModel.findById(id);
+        const order = (await this.orderModel.findById(id)).toObject();
+
+        // populate products
+        const products: Product[] = [];
+        for (const product of order.products) {
+            const orderedProduct = await this.productModel.findById(product.productId);
+            if (orderedProduct) {
+                products.push(orderedProduct);
+            }
+        }
+
+        (order.products as unknown as Product[]) = products;
+
+        return order as unknown as Order;
     }
 
     async update(id: string | number, dto: OrderUpdateDto): Promise<Order> {
