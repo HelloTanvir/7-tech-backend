@@ -7,6 +7,7 @@ import {
     HttpCode,
     HttpStatus,
     Param,
+    ParseBoolPipe,
     ParseIntPipe,
     Post,
     Put,
@@ -70,9 +71,22 @@ export class ProductController {
     @ApiQuery({ name: 'subCategory', example: 'Asus', required: false })
     @ApiQuery({ name: 'startDate', example: '2022-12-24T19:09:05.925Z', required: false })
     @ApiQuery({ name: 'endDate', example: '2022-12-24T19:09:05.925Z', required: false })
-    @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
+    @ApiQuery({
+        name: 'searchQuery',
+        example: 'searching is a costly operation',
+        required: false,
+        description: "Other filters won't be applied if searchQuery is present",
+    })
     @ApiQuery({ name: 'lowerPrice', example: 1, type: Number, required: false })
     @ApiQuery({ name: 'higherPrice', example: 10000, type: Number, required: false })
+    @ApiQuery({
+        name: 'highFirst',
+        example: false,
+        type: Boolean,
+        required: false,
+        description:
+            'This will make sure that in a given price range, the products with higher price comes first',
+    })
     @ApiOperation({ summary: 'Get all products' })
     @ApiOkResponse({ type: AllProductsResponse })
     findAll(
@@ -85,7 +99,8 @@ export class ProductController {
         @Query('endDate') endDate: string,
         @Query('searchQuery') searchQuery: string,
         @Query('lowerPrice', new DefaultValuePipe(1), new ParseIntPipe()) lowerPrice: number,
-        @Query('higherPrice', new DefaultValuePipe(10000), new ParseIntPipe()) higherPrice: number
+        @Query('higherPrice', new DefaultValuePipe(10000), new ParseIntPipe()) higherPrice: number,
+        @Query('highFirst', new DefaultValuePipe(false), new ParseBoolPipe()) highFirst: boolean
     ): Promise<AllProductsResponse> {
         let filterQuery: FilterQuery = {};
 
@@ -117,7 +132,7 @@ export class ProductController {
             filterQuery = { ...filterQuery, regularPrice: { $lte: higherPrice } };
         }
 
-        return this.productService.findAll(page, size, searchQuery, filterQuery);
+        return this.productService.findAll(page, size, highFirst, searchQuery, filterQuery);
     }
 
     @Public()
