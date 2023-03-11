@@ -4,8 +4,8 @@ import { User, UserSchema } from '../auth/schema';
 import { Category, CategorySchema } from '../category/schema';
 import { Order, OrderSchema } from '../order/schema';
 import { Product, ProductSchema } from '../product/schema';
-import { AnayticsController } from './anaytics.controller';
-import { AnayticsService } from './anaytics.service';
+import { AnalyticsController } from './analytics.controller';
+import { AnalyticsService } from './analytics.service';
 
 @Module({
     imports: [
@@ -16,7 +16,7 @@ import { AnayticsService } from './anaytics.service';
             { name: Order.name, schema: OrderSchema },
         ]),
     ],
-    controllers: [AnayticsController],
-    providers: [AnayticsService],
+    controllers: [AnalyticsController],
+    providers: [AnalyticsService],
 })
-export class AnayticsModule {}
+export class AnalyticsModule {}

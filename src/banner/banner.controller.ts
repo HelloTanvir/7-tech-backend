@@ -62,7 +62,7 @@ export class BannerController {
         @UploadedFiles() images: Array<Express.Multer.File>
     ): Promise<Banner> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.bannerService.create(images);
@@ -88,7 +88,7 @@ export class BannerController {
         @Param('bannerId') bannerId: string | number
     ): Promise<Banner> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.bannerService.delete(bannerId);

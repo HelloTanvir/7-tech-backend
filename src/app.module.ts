@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { AuthModule } from './auth/auth.module';
 import { BannerModule } from './banner/banner.module';
 import { CategoryModule } from './category/category.module';
@@ -11,7 +12,6 @@ import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { MongoExceptionFilter } from './utils';
-import { AnayticsModule } from './anaytics/anaytics.module';
 
 @Module({
     imports: [
@@ -25,7 +25,7 @@ import { AnayticsModule } from './anaytics/anaytics.module';
         OrderModule,
         BannerModule,
         UserModule,
-        AnayticsModule,
+        AnalyticsModule,
     ],
     providers: [
         {
