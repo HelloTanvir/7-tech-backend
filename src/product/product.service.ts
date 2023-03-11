@@ -66,6 +66,7 @@ export class ProductService {
     async findAll(
         page: number,
         size: number,
+        highFirst: boolean,
         searchQuery: string,
         filterQuery: FilterQuery
     ): Promise<AllProductsResponse> {
@@ -98,6 +99,7 @@ export class ProductService {
 
         const products = await this.productModel
             .find({ ...filterQuery })
+            .sort({ regularPrice: highFirst ? -1 : 1 })
             .limit(size)
             .skip((page - 1) * size);
 
