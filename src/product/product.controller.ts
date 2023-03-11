@@ -71,6 +71,8 @@ export class ProductController {
     @ApiQuery({ name: 'startDate', example: '2022-12-24T19:09:05.925Z', required: false })
     @ApiQuery({ name: 'endDate', example: '2022-12-24T19:09:05.925Z', required: false })
     @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
+    @ApiQuery({ name: 'lowerPrice', example: 1, type: Number, required: false })
+    @ApiQuery({ name: 'higherPrice', example: 10000, type: Number, required: false })
     @ApiOperation({ summary: 'Get all products' })
     @ApiOkResponse({ type: AllProductsResponse })
     findAll(
