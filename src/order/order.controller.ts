@@ -49,22 +49,36 @@ export class OrderController {
     @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
     @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
     @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
-    @ApiOperation({ summary: 'Gel all orders' })
+    @ApiOperation({ summary: 'Get all orders' })
     @ApiOkResponse({ type: [Order] })
+    @ApiBearerAuth()
     findAll(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
         @Query('size', new DefaultValuePipe(15), new ParseIntPipe()) size: number,
         @Query('searchQuery') searchQuery: string
     ): Promise<AllOrdersResponse> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
         return this.orderService.findAll(page, size, searchQuery);
     }
 
     @Get('/:orderId')
     @HttpCode(HttpStatus.OK)
     @ApiParam({ name: 'orderId', type: 'string' })
-    @ApiOperation({ summary: 'Gel a single order' })
+    @ApiOperation({ summary: 'Get a single order' })
     @ApiOkResponse({ type: Order })
-    findOne(@Param('orderId') orderId: string | number): Promise<Order> {
+    @ApiBearerAuth()
+    findOne(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('orderId') orderId: string | number
+    ): Promise<Order> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
         return this.orderService.findOne(orderId);
     }
 
@@ -80,7 +94,7 @@ export class OrderController {
         @Body() dto: OrderUpdateDto
     ): Promise<Order> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.orderService.update(orderId, dto);
@@ -97,7 +111,7 @@ export class OrderController {
         @Param('orderId') orderId: string | number
     ): Promise<Order> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.orderService.delete(orderId);

@@ -19,7 +19,8 @@ import {
     ApiOperation,
     ApiParam,
     ApiQuery,
-    ApiTags,
+    // eslint-disable-next-line prettier/prettier
+    ApiTags
 } from '@nestjs/swagger';
 import { User } from '../auth/schema';
 import { GetCurrentUser } from '../common/decorators';
@@ -47,7 +48,7 @@ export class UserController {
         @Query('searchQuery') searchQuery: string
     ): Promise<AllUsersResponse> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.userService.findAll(page, size, searchQuery);
@@ -64,7 +65,7 @@ export class UserController {
         @Param('userId') userId: string | number
     ): Promise<User> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.userService.findOne(userId);
@@ -82,7 +83,7 @@ export class UserController {
         @Body() dto: ProfileUpdateDto
     ): Promise<User> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.userService.update(userId, dto);
@@ -99,7 +100,7 @@ export class UserController {
         @Param('userId') userId: string | number
     ): Promise<User> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.userService.delete(userId);

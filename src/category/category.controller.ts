@@ -45,7 +45,7 @@ export class CategoryController {
         @Body() dto: CategoryDto
     ): Promise<Category> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.categoryService.create(dto);
@@ -57,7 +57,7 @@ export class CategoryController {
     @ApiQuery({ name: 'page', example: 1, type: Number, required: false })
     @ApiQuery({ name: 'size', example: 15, type: Number, required: false })
     @ApiQuery({ name: 'searchQuery', example: 'searching is a costly operation', required: false })
-    @ApiOperation({ summary: 'Gel all categories' })
+    @ApiOperation({ summary: 'Get all categories' })
     @ApiOkResponse({ type: AllCategoriesResponse })
     findAll(
         @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
@@ -71,7 +71,7 @@ export class CategoryController {
     @Get('/:categoryId')
     @HttpCode(HttpStatus.OK)
     @ApiParam({ name: 'categoryId', type: 'string' })
-    @ApiOperation({ summary: 'Gel a single category' })
+    @ApiOperation({ summary: 'Get a single category' })
     @ApiOkResponse({ type: Category })
     findOne(@Param('categoryId') categoryId: string | number): Promise<Category> {
         return this.categoryService.findOne(categoryId);
@@ -89,7 +89,7 @@ export class CategoryController {
         @Body() dto: CategoryUpdateDto
     ): Promise<Category> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.categoryService.update(categoryId, dto);
@@ -106,8 +106,7 @@ export class CategoryController {
         @Param('categoryId') categoryId: string | number
     ): Promise<Category> {
         if (!isAdmin) {
-            // throw new UnauthorizedException('you are not the admin');
-            console.log('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.categoryService.delete(categoryId);
@@ -125,7 +124,7 @@ export class CategoryController {
         @Body() dto: SubCategoryDto
     ): Promise<Category> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.categoryService.addSubCategory(categoryId, dto);
@@ -145,7 +144,7 @@ export class CategoryController {
         @Body() dto: SubCategoryDto
     ): Promise<Category> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.categoryService.updateSubCategory(categoryId, subCategoryId, dto);
@@ -164,7 +163,7 @@ export class CategoryController {
         @Param('subCategoryId') subCategoryId: string | number
     ): Promise<Category> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.categoryService.deleteSubCategory(categoryId, subCategoryId);

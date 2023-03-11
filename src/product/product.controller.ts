@@ -55,7 +55,7 @@ export class ProductController {
         @UploadedFiles() images: Array<Express.Multer.File>
     ): Promise<Product> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.create(dto, images);
@@ -169,7 +169,7 @@ export class ProductController {
         @UploadedFiles() images: Array<Express.Multer.File>
     ): Promise<Product> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.update(productId, dto, images);
@@ -186,7 +186,7 @@ export class ProductController {
         @Param('productId') productId: string | number
     ): Promise<Product> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.delete(productId);
@@ -233,7 +233,7 @@ export class ProductController {
         @Body() dto: DetailsDto
     ): Promise<string> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.addDetails(productId, dto);
@@ -252,7 +252,7 @@ export class ProductController {
         @Param('detailsId') detailsId: string | number
     ): Promise<string> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.deleteDetails(productId, detailsId);
@@ -270,7 +270,7 @@ export class ProductController {
         @Body() dto: InformationDto
     ): Promise<string> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.addInformation(productId, dto);
@@ -289,7 +289,7 @@ export class ProductController {
         @Param('informationId') informationId: string | number
     ): Promise<string> {
         if (!isAdmin) {
-            throw new UnauthorizedException('you are not the admin');
+            throw new UnauthorizedException('Admin access denied');
         }
 
         return this.productService.deleteInformation(productId, informationId);

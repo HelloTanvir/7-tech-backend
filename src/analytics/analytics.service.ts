@@ -8,7 +8,7 @@ import { Product, ProductDocument } from '../product/schema';
 import { AllAnalyticsResponse } from './types';
 
 @Injectable()
-export class AnayticsService {
+export class AnalyticsService {
     constructor(
         @InjectModel(Product.name) private readonly productModel: Model<ProductDocument>,
         @InjectModel(Category.name) private readonly categoryModel: Model<CategoryDocument>,
