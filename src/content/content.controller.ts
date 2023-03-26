@@ -61,7 +61,11 @@ export class ContentController {
     }
 
     @Delete()
-    remove(): Promise<string> {
+    remove(@GetCurrentUser('isAdmin') isAdmin: boolean): Promise<string> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
         return this.contentService.remove();
     }
 }
