@@ -61,6 +61,10 @@ export class ContentController {
     }
 
     @Delete()
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Remove content' })
+    @ApiOkResponse({ type: String })
+    @ApiBearerAuth()
     remove(@GetCurrentUser('isAdmin') isAdmin: boolean): Promise<string> {
         if (!isAdmin) {
             throw new UnauthorizedException('Admin access denied');
