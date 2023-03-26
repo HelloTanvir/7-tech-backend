@@ -21,8 +21,18 @@ export class ContentService {
         return newContent;
     }
 
-    findAll() {
-        return `This action returns all content`;
+    async find(contentType: string): Promise<Content> {
+        const content = await this.contentModel.findOne();
+
+        if (!content) {
+            throw new Error('Content not found');
+        }
+
+        if (contentType) {
+            return content[contentType];
+        }
+
+        return content;
     }
 
     findOne(id: number) {

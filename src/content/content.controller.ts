@@ -8,11 +8,20 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetCurrentUser } from '../common/decorators';
+import {
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiOperation,
+    ApiQuery,
+    // eslint-disable-next-line prettier/prettier
+    ApiTags
+} from '@nestjs/swagger';
+import { GetCurrentUser, Public } from '../common/decorators';
 import { ContentService } from './content.service';
 import { CreateContentDto } from './dto';
 import { UpdateContentDto } from './dto/update-content.dto';
@@ -39,14 +48,19 @@ export class ContentController {
         return this.contentService.create(createContentDto);
     }
 
+    @Public()
     @Get()
-    findAll() {
-        return this.contentService.findAll();
-    }
-
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.contentService.findOne(+id);
+    @HttpCode(HttpStatus.OK)
+    @ApiQuery({
+        name: 'content-type',
+        example: 'terms',
+        required: false,
+        enum: ['terms', 'privacy', 'about'],
+    })
+    @ApiOperation({ summary: 'Get content' })
+    @ApiOkResponse({ type: Content })
+    find(@Query('content-type') contentType: string) {
+        return this.contentService.find(contentType);
     }
 
     @Patch(':id')
