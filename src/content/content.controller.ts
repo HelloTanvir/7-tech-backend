@@ -21,7 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { GetCurrentUser, Public } from '../common/decorators';
 import { ContentService } from './content.service';
-import { CreateContentDto, UpdatePrivacyDto, UpdateTermsDto } from './dto';
+import { CreateContentDto, UpdateAboutDto, UpdatePrivacyDto, UpdateTermsDto } from './dto';
 import { Content } from './schema';
 
 @ApiTags('Content')
@@ -90,6 +90,22 @@ export class ContentController {
         }
 
         return this.contentService.updatePrivacy(updatePrivacyDto);
+    }
+
+    @Post('/update/about')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Update about' })
+    @ApiOkResponse({ type: Content['about'] })
+    @ApiBearerAuth()
+    updateAbout(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Body() updateAboutDto: UpdateAboutDto
+    ): Promise<Content['about']> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
+        return this.contentService.updateAbout(updateAboutDto);
     }
 
     @Delete()
