@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateContentDto, UpdateTermsDto } from './dto';
+import { CreateContentDto, UpdatePrivacyDto, UpdateTermsDto } from './dto';
 import { Content, ContentDocument } from './schema';
 
 @Injectable()
@@ -45,6 +45,19 @@ export class ContentService {
         await content.save();
 
         return content.terms;
+    }
+
+    async updatePrivacy(updatePrivacyDto: UpdatePrivacyDto): Promise<Content['privacy']> {
+        const content = await this.contentModel.findOne();
+
+        if (!content) {
+            throw new Error('Content not found');
+        }
+
+        content.privacy = updatePrivacyDto.privacy;
+        await content.save();
+
+        return content.privacy;
     }
 
     async remove(): Promise<string> {
