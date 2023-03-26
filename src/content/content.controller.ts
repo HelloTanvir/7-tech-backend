@@ -1,8 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Patch,
+    Post,
+    // eslint-disable-next-line prettier/prettier
+    UnauthorizedException
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { GetCurrentUser } from '../common/decorators';
 import { ContentService } from './content.service';
-import { CreateContentDto } from './dto/create-content.dto';
+import { CreateContentDto } from './dto';
 import { UpdateContentDto } from './dto/update-content.dto';
+import { Content } from './schema';
 
 @ApiTags('Content')
 @Controller('content')
@@ -10,7 +24,18 @@ export class ContentController {
     constructor(private contentService: ContentService) {}
 
     @Post()
-    create(@Body() createContentDto: CreateContentDto) {
+    @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Create a content' })
+    @ApiCreatedResponse({ type: Content })
+    @ApiBearerAuth()
+    create(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Body() createContentDto: CreateContentDto
+    ): Promise<Content> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
         return this.contentService.create(createContentDto);
     }
 
