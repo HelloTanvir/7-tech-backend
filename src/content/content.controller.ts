@@ -5,7 +5,6 @@ import {
     Get,
     HttpCode,
     HttpStatus,
-    Param,
     Post,
     Query,
     // eslint-disable-next-line prettier/prettier
@@ -57,12 +56,12 @@ export class ContentController {
     })
     @ApiOperation({ summary: 'Get content' })
     @ApiOkResponse({ type: Content })
-    find(@Query('content-type') contentType: string) {
+    find(@Query('content-type') contentType: string): Promise<Content> {
         return this.contentService.find(contentType);
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.contentService.remove(+id);
+    @Delete()
+    remove(): Promise<string> {
+        return this.contentService.remove();
     }
 }

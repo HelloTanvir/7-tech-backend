@@ -34,7 +34,15 @@ export class ContentService {
         return content;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} content`;
+    async remove(): Promise<string> {
+        const content = await this.contentModel.findOne();
+
+        if (!content) {
+            throw new Error('Content not found');
+        }
+
+        await content.remove();
+
+        return 'Content deleted successfully';
     }
 }
