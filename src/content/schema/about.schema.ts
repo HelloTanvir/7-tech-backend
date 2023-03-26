@@ -11,7 +11,11 @@ export class About {
     @Prop({ default: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.' })
     description: string;
 
-    @ApiProperty({ type: [String] })
+    @ApiProperty({
+        type: [String],
+        // example: ['Lorem ipsum dolor sit amet consectetur adipisicing elit.'],
+        example: ['test.'],
+    })
     @Prop({ type: [String], default: [] })
     topics: string[];
 }
