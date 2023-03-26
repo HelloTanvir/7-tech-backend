@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateContentDto } from './dto';
-import { UpdateContentDto } from './dto/update-content.dto';
 import { Content, ContentDocument } from './schema';
 
 @Injectable()
@@ -33,14 +32,6 @@ export class ContentService {
         }
 
         return content;
-    }
-
-    findOne(id: number) {
-        return `This action returns a #${id} content`;
-    }
-
-    update(id: number, updateContentDto: UpdateContentDto) {
-        return `This action updates a #${id} content`;
     }
 
     remove(id: number) {

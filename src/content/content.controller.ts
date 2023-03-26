@@ -6,7 +6,6 @@ import {
     HttpCode,
     HttpStatus,
     Param,
-    Patch,
     Post,
     Query,
     // eslint-disable-next-line prettier/prettier
@@ -24,7 +23,6 @@ import {
 import { GetCurrentUser, Public } from '../common/decorators';
 import { ContentService } from './content.service';
 import { CreateContentDto } from './dto';
-import { UpdateContentDto } from './dto/update-content.dto';
 import { Content } from './schema';
 
 @ApiTags('Content')
@@ -61,11 +59,6 @@ export class ContentController {
     @ApiOkResponse({ type: Content })
     find(@Query('content-type') contentType: string) {
         return this.contentService.find(contentType);
-    }
-
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateContentDto: UpdateContentDto) {
-        return this.contentService.update(+id, updateContentDto);
     }
 
     @Delete(':id')
