@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 
-export class UpdateAboutDto {
+class About {
     @ApiProperty({
         example: 'disclaimer',
         description: 'Title of the about',
@@ -29,4 +30,25 @@ export class UpdateAboutDto {
     @IsNotEmpty()
     @IsArray()
     topics: string[];
+}
+
+export class UpdateAboutDto {
+    @ApiProperty({ type: [About] })
+    @IsOptional()
+    @IsNotEmpty()
+    @Transform(
+        ({ value }) => {
+            if (value && typeof value === 'string') {
+                return JSON.parse(value);
+            } else if (value && typeof value === 'object') {
+                return value;
+            }
+            return [];
+        },
+        { toClassOnly: true }
+    )
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => About)
+    about: About[];
 }
