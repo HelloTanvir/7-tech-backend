@@ -5,7 +5,6 @@ export class TermsCreateDto {
     @ApiProperty({
         example: 'disclaimer',
         description: 'Title of the terms',
-        enum: ['disclaimer', 'payment terms'],
     })
     @IsNotEmpty()
     @IsString()
@@ -39,7 +38,6 @@ export class AboutCreateDto {
     @ApiProperty({
         example: 'disclaimer',
         description: 'Title of the about',
-        enum: ['introduction', 'objective', 'partners & affiliates'],
     })
     @IsNotEmpty()
     @IsString()
