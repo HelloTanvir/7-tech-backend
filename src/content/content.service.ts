@@ -70,6 +70,32 @@ export class ContentService {
         return privacy;
     }
 
+    // About
+    async createAbout(aboutCreateDto: AboutCreateDto): Promise<About> {
+        const about = await this.createContentElementItems('about', aboutCreateDto);
+        return about;
+    }
+
+    async findAbouts(): Promise<Content['about']> {
+        const about = await this.findContentElement('about');
+        return about;
+    }
+
+    async findAbout(aboutId: string): Promise<About> {
+        const about = await this.findContentElementItems('about', aboutId);
+        return about;
+    }
+
+    async updateAbout(aboutId: string, aboutUpdateDto: AboutCreateDto): Promise<About> {
+        const about = await this.updateContentElementItems('about', aboutId, aboutUpdateDto);
+        return about;
+    }
+
+    async deleteAbout(aboutId: string): Promise<About> {
+        const about = await this.deleteContentElementItems('about', aboutId);
+        return about;
+    }
+
     // utility functions
     async findContentElement(
         type: 'terms' | 'privacy' | 'about'

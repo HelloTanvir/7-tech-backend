@@ -21,8 +21,15 @@ import {
 } from '@nestjs/swagger';
 import { GetCurrentUser, Public } from '../common/decorators';
 import { ContentService } from './content.service';
-import { PrivacyCreateDto, TermsCreateDto, TermsUpdateDto } from './dto';
-import { Content, Privacy, Terms } from './schema';
+import {
+    AboutCreateDto,
+    AboutUpdateDto,
+    PrivacyCreateDto,
+    PrivacyUpdateDto,
+    TermsCreateDto,
+    TermsUpdateDto,
+} from './dto';
+import { About, Content, Privacy, Terms } from './schema';
 
 @ApiTags('Content')
 @Controller('content')
@@ -140,7 +147,7 @@ export class ContentController {
     updatePrivacy(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
         @Param('privacyId') privacyId: string,
-        @Body() privacyUpdateDto: PrivacyCreateDto
+        @Body() privacyUpdateDto: PrivacyUpdateDto
     ): Promise<Privacy> {
         if (!isAdmin) {
             throw new UnauthorizedException('Admin access denied');
@@ -163,5 +170,73 @@ export class ContentController {
         }
 
         return this.contentService.deletePrivacy(privacyId);
+    }
+
+    // about
+    @Post('about')
+    @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Create an about' })
+    @ApiCreatedResponse({ type: About })
+    @ApiBearerAuth()
+    createAbout(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Body() aboutCreateDto: AboutCreateDto
+    ): Promise<About> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
+        return this.contentService.createAbout(aboutCreateDto);
+    }
+
+    @Public()
+    @Get('about')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Get all about' })
+    @ApiOkResponse({ type: Content['about'] })
+    findAbouts(): Promise<Content['about']> {
+        return this.contentService.findAbouts();
+    }
+
+    @Public()
+    @Get('about/:aboutId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Get an about' })
+    @ApiOkResponse({ type: About })
+    findAbout(@Param('aboutId') aboutId: string): Promise<About> {
+        return this.contentService.findAbout(aboutId);
+    }
+
+    @Put('about/:aboutId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Update an about' })
+    @ApiOkResponse({ type: About })
+    @ApiBearerAuth()
+    updateAbout(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('aboutId') aboutId: string,
+        @Body() aboutUpdateDto: AboutUpdateDto
+    ): Promise<About> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
+        return this.contentService.updateAbout(aboutId, aboutUpdateDto);
+    }
+
+    @Delete('about/:aboutId')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Delete an about' })
+    @ApiOkResponse({ type: About })
+    @ApiBearerAuth()
+    deleteAbout(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Param('aboutId') aboutId: string
+    ): Promise<About> {
+        if (!isAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
+        return this.contentService.deleteAbout(aboutId);
     }
 }
