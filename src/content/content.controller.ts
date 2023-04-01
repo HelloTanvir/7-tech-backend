@@ -24,6 +24,25 @@ import { ContentService } from './content.service';
 import { CreateContentDto, UpdateAboutDto, UpdatePrivacyDto, UpdateTermsDto } from './dto';
 import { Content } from './schema';
 
+/*
+    TODO: refactor all endpoints
+    all of the content types should be different endpoints
+    /content/terms - GET
+    /content/terms - POST
+    /content/terms/:termsId - DELETE
+    /content/terms/:termsId - PUT
+
+    /content/privacy - GET
+    /content/privacy - POST
+    /content/privacy/:privacyId - DELETE
+    /content/privacy/:privacyId - PUT
+    
+    /content/about - GET
+    /content/about - POST
+    /content/about/:aboutId - DELETE
+    /content/about/:aboutId - PUT
+*/
+
 @ApiTags('Content')
 @Controller('content')
 export class ContentController {
