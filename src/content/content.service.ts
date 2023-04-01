@@ -1,12 +1,20 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AboutCreateDto, PrivacyCreateDto, TermsCreateDto, TermsUpdateDto } from './dto';
+import {
+    AboutCreateDto,
+    PrivacyCreateDto,
+    PrivacyUpdateDto,
+    TermsCreateDto,
+    TermsUpdateDto,
+} from './dto';
 import { About, Content, ContentDocument, Privacy, Terms } from './schema';
 
 @Injectable()
 export class ContentService {
     constructor(@InjectModel(Content.name) private readonly contentModel: Model<ContentDocument>) {}
+
+    // Terms
     async createTerms(termsCreateDto: TermsCreateDto): Promise<Terms> {
         const terms = await this.createContentElementItems('terms', termsCreateDto);
         return terms;
@@ -32,6 +40,37 @@ export class ContentService {
         return term;
     }
 
+    // Privacy
+    async createPrivacy(privacyCreateDto: PrivacyCreateDto): Promise<Privacy> {
+        const privacy = await this.createContentElementItems('privacy', privacyCreateDto);
+        return privacy;
+    }
+
+    async findPrivacies(): Promise<Content['privacy']> {
+        const privacy = await this.findContentElement('privacy');
+        return privacy;
+    }
+
+    async findPrivacy(privacyId: string): Promise<Privacy> {
+        const privacy = await this.findContentElementItems('privacy', privacyId);
+        return privacy;
+    }
+
+    async updatePrivacy(privacyId: string, privacyUpdateDto: PrivacyUpdateDto): Promise<Privacy> {
+        const privacy = await this.updateContentElementItems(
+            'privacy',
+            privacyId,
+            privacyUpdateDto
+        );
+        return privacy;
+    }
+
+    async deletePrivacy(privacyId: string): Promise<Privacy> {
+        const privacy = await this.deleteContentElementItems('privacy', privacyId);
+        return privacy;
+    }
+
+    // utility functions
     async findContentElement(
         type: 'terms' | 'privacy' | 'about'
     ): Promise<Content['terms'] | Content['privacy'] | Content['about']> {
