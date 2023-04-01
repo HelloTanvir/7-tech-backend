@@ -4,11 +4,11 @@ import { ApiProperty } from '@nestjs/swagger';
 @Schema()
 export class About {
     @ApiProperty()
-    @Prop({ enum: ['introduction', 'objective', 'partners & affiliates'], default: 'disclaimer' })
+    @Prop()
     title: string;
 
     @ApiProperty()
-    @Prop({ default: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.' })
+    @Prop()
     description: string;
 }
 

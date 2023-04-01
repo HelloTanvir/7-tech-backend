@@ -5,7 +5,6 @@ export class TermsUpdateDto {
     @ApiProperty({
         example: 'disclaimer',
         description: 'Title of the terms',
-        enum: ['disclaimer', 'payment terms'],
     })
     @IsOptional()
     @IsNotEmpty()
@@ -43,7 +42,6 @@ export class AboutUpdateDto {
     @ApiProperty({
         example: 'disclaimer',
         description: 'Title of the about',
-        enum: ['introduction', 'objective', 'partners & affiliates'],
     })
     @IsOptional()
     @IsNotEmpty()

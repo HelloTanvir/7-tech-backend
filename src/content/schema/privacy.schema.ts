@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 @Schema()
 export class Privacy {
     @ApiProperty()
-    @Prop({ default: 'information collection and use' })
+    @Prop()
     title: string;
 
     @ApiProperty()
