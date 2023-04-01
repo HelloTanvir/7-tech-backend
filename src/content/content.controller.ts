@@ -36,6 +36,16 @@ import { About, Content, Privacy, Terms } from './schema';
 export class ContentController {
     constructor(private contentService: ContentService) {}
 
+    // All content
+    @Public()
+    @Get()
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Get all content' })
+    @ApiOkResponse({ type: Content })
+    findContent(): Promise<Content> {
+        return this.contentService.findContent();
+    }
+
     // Terms
     @Post('terms')
     @HttpCode(HttpStatus.CREATED)

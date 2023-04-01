@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -13,6 +13,17 @@ import { About, Content, ContentDocument, Privacy, Terms } from './schema';
 @Injectable()
 export class ContentService {
     constructor(@InjectModel(Content.name) private readonly contentModel: Model<ContentDocument>) {}
+
+    // All content
+    async findContent(): Promise<Content> {
+        const content = await this.contentModel.findOne();
+
+        if (!content) {
+            throw new NotFoundException('Content not found');
+        }
+
+        return content;
+    }
 
     // Terms
     async createTerms(termsCreateDto: TermsCreateDto): Promise<Terms> {
