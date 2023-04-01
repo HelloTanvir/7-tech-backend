@@ -10,14 +10,6 @@ export class About {
     @ApiProperty()
     @Prop({ default: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.' })
     description: string;
-
-    @ApiProperty({
-        type: [String],
-        // example: ['Lorem ipsum dolor sit amet consectetur adipisicing elit.'],
-        example: ['test.'],
-    })
-    @Prop({ type: [String], default: [] })
-    topics: string[];
 }
 
 export const AboutSchema = SchemaFactory.createForClass(About);
