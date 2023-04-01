@@ -6,6 +6,7 @@ import {
     HttpCode,
     HttpStatus,
     Post,
+    Put,
     Query,
     // eslint-disable-next-line prettier/prettier
     UnauthorizedException
@@ -15,128 +16,83 @@ import {
     ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
-    ApiQuery,
     // eslint-disable-next-line prettier/prettier
     ApiTags
 } from '@nestjs/swagger';
 import { GetCurrentUser, Public } from '../common/decorators';
 import { ContentService } from './content.service';
-import { CreateContentDto, UpdateAboutDto, UpdatePrivacyDto, UpdateTermsDto } from './dto';
-import { Content } from './schema';
-
-/*
-    TODO: refactor all endpoints
-    all of the content types should be different endpoints
-    /content/terms - GET
-    /content/terms - POST
-    /content/terms/:termsId - DELETE
-    /content/terms/:termsId - PUT
-
-    /content/privacy - GET
-    /content/privacy - POST
-    /content/privacy/:privacyId - DELETE
-    /content/privacy/:privacyId - PUT
-    
-    /content/about - GET
-    /content/about - POST
-    /content/about/:aboutId - DELETE
-    /content/about/:aboutId - PUT
-*/
+import { TermsCreateDto, TermsUpdateDto } from './dto';
+import { Content, Terms } from './schema';
 
 @ApiTags('Content')
 @Controller('content')
 export class ContentController {
     constructor(private contentService: ContentService) {}
 
-    @Post()
+    @Post('terms')
     @HttpCode(HttpStatus.CREATED)
-    @ApiOperation({ summary: 'Create a content' })
-    @ApiCreatedResponse({ type: Content })
+    @ApiOperation({ summary: 'Create a terms' })
+    @ApiCreatedResponse({ type: Terms })
     @ApiBearerAuth()
-    create(
+    createTerms(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
-        @Body() createContentDto: CreateContentDto
-    ): Promise<Content> {
+        @Body() termsCreateDto: TermsCreateDto
+    ): Promise<Terms> {
         if (!isAdmin) {
             throw new UnauthorizedException('Admin access denied');
         }
 
-        return this.contentService.create(createContentDto);
+        return this.contentService.createTerms(termsCreateDto);
     }
 
     @Public()
-    @Get()
+    @Get('terms')
     @HttpCode(HttpStatus.OK)
-    @ApiQuery({
-        name: 'content-type',
-        example: 'terms',
-        required: false,
-        enum: ['terms', 'privacy', 'about'],
-    })
-    @ApiOperation({ summary: 'Get content' })
-    @ApiOkResponse({ type: Content })
-    find(@Query('content-type') contentType: string): Promise<Content> {
-        return this.contentService.find(contentType);
-    }
-
-    @Post('/update/terms')
-    @HttpCode(HttpStatus.OK)
-    @ApiOperation({ summary: 'Update terms' })
+    @ApiOperation({ summary: 'Get all terms' })
     @ApiOkResponse({ type: Content['terms'] })
-    @ApiBearerAuth()
-    updateTerms(
-        @GetCurrentUser('isAdmin') isAdmin: boolean,
-        @Body() updateTermsDto: UpdateTermsDto
-    ): Promise<Content['terms']> {
-        if (!isAdmin) {
-            throw new UnauthorizedException('Admin access denied');
-        }
-
-        return this.contentService.updateTerms(updateTermsDto);
+    findTerms(): Promise<Content['terms']> {
+        return this.contentService.findTerms();
     }
 
-    @Post('/update/privacy')
+    @Public()
+    @Get('terms/:termsId')
     @HttpCode(HttpStatus.OK)
-    @ApiOperation({ summary: 'Update privacy' })
-    @ApiOkResponse({ type: Content['privacy'] })
-    @ApiBearerAuth()
-    updatePrivacy(
-        @GetCurrentUser('isAdmin') isAdmin: boolean,
-        @Body() updatePrivacyDto: UpdatePrivacyDto
-    ): Promise<Content['privacy']> {
-        if (!isAdmin) {
-            throw new UnauthorizedException('Admin access denied');
-        }
-
-        return this.contentService.updatePrivacy(updatePrivacyDto);
+    @ApiOperation({ summary: 'Get a term' })
+    @ApiOkResponse({ type: Terms })
+    findTerm(@Query('termsId') termsId: string): Promise<Terms> {
+        return this.contentService.findTerm(termsId);
     }
 
-    @Post('/update/about')
+    @Put('terms/:termsId')
     @HttpCode(HttpStatus.OK)
-    @ApiOperation({ summary: 'Update about' })
-    @ApiOkResponse({ type: Content['about'] })
+    @ApiOperation({ summary: 'Update a term' })
+    @ApiOkResponse({ type: Terms })
     @ApiBearerAuth()
-    updateAbout(
+    updateTerm(
         @GetCurrentUser('isAdmin') isAdmin: boolean,
-        @Body() updateAboutDto: UpdateAboutDto
-    ): Promise<Content['about']> {
+        @Query('termsId') termsId: string,
+        @Body() termsUpdateDto: TermsUpdateDto
+    ): Promise<Terms> {
         if (!isAdmin) {
             throw new UnauthorizedException('Admin access denied');
         }
 
-        return this.contentService.updateAbout(updateAboutDto);
+        return this.contentService.updateTerm(termsId, termsUpdateDto);
     }
 
-    @Delete()
+    @Delete('terms/:termsId')
     @HttpCode(HttpStatus.OK)
-    @ApiOperation({ summary: 'Remove content' })
-    @ApiOkResponse({ type: String })
+    @ApiOperation({ summary: 'Delete a term' })
+    @ApiOkResponse({ type: Terms })
     @ApiBearerAuth()
-    remove(@GetCurrentUser('isAdmin') isAdmin: boolean): Promise<string> {
+    deleteTerm(
+        @GetCurrentUser('isAdmin') isAdmin: boolean,
+        @Query('termsId') termsId: string
+    ): Promise<Terms> {
         if (!isAdmin) {
             throw new UnauthorizedException('Admin access denied');
         }
 
-        return this.contentService.remove();
+        return this.contentService.deleteTerm(termsId);
     }
 }

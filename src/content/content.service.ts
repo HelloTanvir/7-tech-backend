@@ -1,87 +1,92 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateContentDto, UpdateAboutDto, UpdatePrivacyDto, UpdateTermsDto } from './dto';
-import { Content, ContentDocument } from './schema';
+import { TermsCreateDto, TermsUpdateDto } from './dto';
+import { Content, ContentDocument, Terms } from './schema';
 
 @Injectable()
 export class ContentService {
     constructor(@InjectModel(Content.name) private readonly contentModel: Model<ContentDocument>) {}
-    async create(createContentDto: CreateContentDto): Promise<Content> {
-        const isContentExist = await this.contentModel.countDocuments();
-
-        if (isContentExist) {
-            throw new ForbiddenException('Content already exists');
-        }
-
-        const newContent = new this.contentModel(createContentDto);
-        await newContent.save();
-
-        return newContent;
-    }
-
-    async find(contentType: string): Promise<Content> {
+    async createTerms(termsCreateDto: TermsCreateDto): Promise<Terms> {
         const content = await this.contentModel.findOne();
 
         if (!content) {
-            throw new ForbiddenException('Content not found');
+            const newContent = new this.contentModel();
+            newContent.terms.push(termsCreateDto);
+            await newContent.save();
+
+            return newContent.terms[0];
         }
 
-        if (contentType) {
-            return content[contentType];
-        }
-
-        return content;
-    }
-
-    async updateTerms(updateTermsDto: UpdateTermsDto): Promise<Content['terms']> {
-        const content = await this.contentModel.findOne();
-
-        if (!content) {
-            throw new ForbiddenException('Content not found');
-        }
-
-        content.terms = updateTermsDto.terms;
+        content.terms.push(termsCreateDto);
         await content.save();
+
+        return content.terms[content.terms.length - 1];
+    }
+
+    async findTerms(): Promise<Content['terms']> {
+        const content = await this.contentModel.findOne();
+
+        if (!content) {
+            throw new ForbiddenException('Content not found');
+        }
 
         return content.terms;
     }
 
-    async updatePrivacy(updatePrivacyDto: UpdatePrivacyDto): Promise<Content['privacy']> {
+    async findTerm(termsId: string): Promise<Terms> {
         const content = await this.contentModel.findOne();
 
         if (!content) {
             throw new ForbiddenException('Content not found');
         }
 
-        content.privacy = updatePrivacyDto.privacy;
-        await content.save();
+        const term = content.terms.find((t) => (t as any)._id == termsId);
 
-        return content.privacy;
+        if (!term) {
+            throw new ForbiddenException('Term not found');
+        }
+
+        return term;
     }
 
-    async updateAbout(updateAboutDto: UpdateAboutDto): Promise<Content['about']> {
+    async updateTerm(termsId: string, termsUpdateDto: TermsUpdateDto): Promise<Terms> {
         const content = await this.contentModel.findOne();
 
         if (!content) {
             throw new ForbiddenException('Content not found');
         }
 
-        content.about = updateAboutDto.about;
+        const term = content.terms.find((t) => (t as any)._id == termsId);
+
+        if (!term) {
+            throw new ForbiddenException('Term not found');
+        }
+
+        const index = content.terms.indexOf(term);
+        content.terms[index] = { ...term, ...termsUpdateDto };
         await content.save();
 
-        return content.about;
+        return content.terms[index];
     }
 
-    async remove(): Promise<string> {
+    async deleteTerm(termsId: string): Promise<Terms> {
         const content = await this.contentModel.findOne();
 
         if (!content) {
             throw new ForbiddenException('Content not found');
         }
 
-        await content.remove();
+        const term = content.terms.find((t) => (t as any)._id == termsId);
 
-        return 'Content deleted successfully';
+        if (!term) {
+            throw new ForbiddenException('Term not found');
+        }
+
+        const index = content.terms.indexOf(term);
+        content.terms.splice(index, 1);
+        await content.save();
+
+        return term;
     }
 }
