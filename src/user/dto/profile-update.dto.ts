@@ -19,4 +19,22 @@ export class ProfileUpdateDto {
     @IsNotEmpty()
     @IsString()
     phoneNumber: string;
+
+    @ApiProperty({ example: 'Section-2, Mirpur, Dhaka', description: 'Address of the user' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    address: string;
+
+    @ApiProperty({ example: 'Dhaka', description: 'City of the user' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    city: string;
+
+    @ApiProperty({ example: '1250', description: 'Zone of the user' })
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    zone: string;
 }

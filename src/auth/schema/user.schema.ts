@@ -30,6 +30,18 @@ export class User {
     password: string;
 
     @ApiProperty()
+    @Prop({ default: '' })
+    address: string;
+
+    @ApiProperty()
+    @Prop({ default: '' })
+    city: string;
+
+    @ApiProperty()
+    @Prop({ default: '' })
+    zone: string;
+
+    @ApiProperty()
     @Prop({ type: SchemaTypes.String, default: null })
     refreshToken: string | null;
 }
