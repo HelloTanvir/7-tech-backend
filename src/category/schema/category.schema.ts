@@ -23,6 +23,10 @@ export class Category {
     isFeatured: boolean;
 
     @ApiProperty()
+    @Prop({ default: false })
+    show: boolean;
+
+    @ApiProperty()
     @Prop({ default: '' })
     tagline: string;
 
