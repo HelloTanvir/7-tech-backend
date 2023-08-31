@@ -67,4 +67,14 @@ export class UserService {
 
         return user;
     }
+
+    async makeAdmin(id: string | number): Promise<User> {
+        const user = await this.userModel.findById(id);
+        if (!user) {
+            throw new ForbiddenException('invalid user id');
+        }
+
+        user.isAdmin = true;
+        return await user.save();
+    }
 }

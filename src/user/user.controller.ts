@@ -105,4 +105,21 @@ export class UserController {
 
         return this.userService.delete(userId);
     }
+
+    @Put('make-admin/:userId')
+    @HttpCode(HttpStatus.OK)
+    @ApiParam({ name: 'userId', type: 'string' })
+    @ApiOperation({ summary: 'Make a user admin' })
+    @ApiOkResponse({ type: User })
+    @ApiBearerAuth()
+    makeAdmin(
+        @GetCurrentUser('isSuperAdmin') isSuperAdmin: boolean,
+        @Param('userId') userId: string | number
+    ): Promise<User> {
+        if (!isSuperAdmin) {
+            throw new UnauthorizedException('Admin access denied');
+        }
+
+        return this.userService.makeAdmin(userId);
+    }
 }

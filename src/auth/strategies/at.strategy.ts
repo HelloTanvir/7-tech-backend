@@ -27,6 +27,7 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
         return {
             ...payload,
+            isSuperAdmin: user.isSuperAdmin,
             isAdmin: user.isAdmin,
         };
     }

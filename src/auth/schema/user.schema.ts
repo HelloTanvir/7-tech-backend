@@ -9,6 +9,10 @@ export type UserDocument = User & Document;
 export class User {
     @ApiProperty()
     @Prop({ default: false })
+    isSuperAdmin: boolean;
+
+    @ApiProperty()
+    @Prop({ default: false })
     isAdmin: boolean;
 
     @ApiProperty()
