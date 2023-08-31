@@ -77,4 +77,18 @@ export class UserService {
         user.isAdmin = true;
         return await user.save();
     }
+
+    async removeAdmin(id: string | number): Promise<User> {
+        const user = await this.userModel.findById(id);
+        if (!user) {
+            throw new ForbiddenException('invalid user id');
+        }
+
+        if (!user.isAdmin) {
+            throw new ForbiddenException('user is not an admin');
+        }
+
+        user.isAdmin = false;
+        return await user.save();
+    }
 }
