@@ -116,6 +116,7 @@ export class OrderService {
         for (const product of order.products) {
             const orderedProduct = await this.productModel.findById(product.productId);
             if (orderedProduct) {
+                orderedProduct.quantity = product.quantity;
                 products.push(orderedProduct);
             }
         }
