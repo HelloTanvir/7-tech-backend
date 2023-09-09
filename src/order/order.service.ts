@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from '../product/schema';
@@ -65,13 +65,7 @@ export class OrderService {
     }
 
     async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
-        Logger.log({ searchQuery });
-
         if (searchQuery) {
-            Logger.log({
-                original: searchQuery,
-            });
-
             const orders = await this.orderModel
                 .find({
                     $or: [
@@ -82,7 +76,6 @@ export class OrderService {
                         { zone: { $regex: searchQuery, $options: 'i' } },
                         { payment_method: { $regex: searchQuery, $options: 'i' } },
                         { status: { $regex: searchQuery, $options: 'i' } },
-                        { total: { $regex: searchQuery, $options: 'i' } },
                     ],
                 })
                 .limit(size)
@@ -97,13 +90,7 @@ export class OrderService {
                     { zone: { $regex: searchQuery, $options: 'i' } },
                     { payment_method: { $regex: searchQuery, $options: 'i' } },
                     { status: { $regex: searchQuery, $options: 'i' } },
-                    { total: { $regex: searchQuery, $options: 'i' } },
                 ],
-            });
-
-            Logger.log({
-                count,
-                orders,
             });
 
             return { count, orders };
