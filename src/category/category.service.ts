@@ -78,7 +78,8 @@ export class CategoryService {
             throw new ForbiddenException('category does not exist');
         }
 
-        if (!dto.name || !dto.isFeatured || !dto.tagline || !dto.index) {
+        // if dto is empty then throw error
+        if (!Object.keys(dto).length) {
             throw new ForbiddenException('nothing to update');
         }
 
