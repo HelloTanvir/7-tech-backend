@@ -66,15 +66,16 @@ export class OrderService {
 
     async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
         if (searchQuery) {
-            const queryMatchOptions = [
-                { _id: { $regex: searchQuery, $options: 'i' } },
-                { customer_name: { $regex: searchQuery, $options: 'i' } },
-                { customer_number: { $regex: searchQuery, $options: 'i' } },
-                { address: { $regex: searchQuery, $options: 'i' } },
-                { city: { $regex: searchQuery, $options: 'i' } },
-                { zone: { $regex: searchQuery, $options: 'i' } },
-                { status: { $regex: searchQuery, $options: 'i' } },
-            ];
+            // const queryMatchOptions = [
+            //     { _id: { $regex: searchQuery, $options: 'i' } },
+            //     { customer_name: { $regex: searchQuery, $options: 'i' } },
+            //     { customer_number: { $regex: searchQuery, $options: 'i' } },
+            //     { address: { $regex: searchQuery, $options: 'i' } },
+            //     { city: { $regex: searchQuery, $options: 'i' } },
+            //     { zone: { $regex: searchQuery, $options: 'i' } },
+            //     { status: { $regex: searchQuery, $options: 'i' } },
+            // ];
+            const queryMatchOptions = [];
 
             const orders = await this.orderModel
                 .find({
