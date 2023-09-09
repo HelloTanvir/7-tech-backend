@@ -66,34 +66,28 @@ export class OrderService {
 
     async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
         if (searchQuery) {
-            try {
-                // const queryMatchOptions = [
-                //     { _id: { $regex: searchQuery, $options: 'i' } },
-                //     { customer_name: { $regex: searchQuery, $options: 'i' } },
-                //     { customer_number: { $regex: searchQuery, $options: 'i' } },
-                //     { address: { $regex: searchQuery, $options: 'i' } },
-                //     { city: { $regex: searchQuery, $options: 'i' } },
-                //     { zone: { $regex: searchQuery, $options: 'i' } },
-                //     { status: { $regex: searchQuery, $options: 'i' } },
-                // ];
-                const queryMatchOptions = [];
+            const queryMatchOptions = [
+                { _id: { $regex: searchQuery, $options: 'i' } },
+                { customer_name: { $regex: searchQuery, $options: 'i' } },
+                { customer_number: { $regex: searchQuery, $options: 'i' } },
+                { address: { $regex: searchQuery, $options: 'i' } },
+                { city: { $regex: searchQuery, $options: 'i' } },
+                { zone: { $regex: searchQuery, $options: 'i' } },
+                { status: { $regex: searchQuery, $options: 'i' } },
+            ];
 
-                const orders = await this.orderModel
-                    .find({
-                        $or: queryMatchOptions,
-                    })
-                    .limit(size)
-                    .skip((page - 1) * size);
-
-                const count = await this.orderModel.countDocuments({
+            const orders = await this.orderModel
+                .find({
                     $or: queryMatchOptions,
-                });
+                })
+                .limit(size)
+                .skip((page - 1) * size);
 
-                return { count, orders };
-            } catch (err) {
-                console.log(err);
-                return { count: 0, orders: [] };
-            }
+            const count = await this.orderModel.countDocuments({
+                $or: queryMatchOptions,
+            });
+
+            return { count, orders };
         }
 
         const orders = await this.orderModel
