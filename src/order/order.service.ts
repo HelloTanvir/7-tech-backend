@@ -64,9 +64,13 @@ export class OrderService {
         return order;
     }
 
-    async findAll(page: number, size: number, query: string): Promise<AllOrdersResponse> {
-        if (query) {
-            const searchQuery = new RegExp(query, 'i');
+    async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
+        console.log({ searchQuery });
+
+        if (searchQuery) {
+            console.log({
+                original: searchQuery,
+            });
 
             const orders = await this.orderModel
                 .find({
@@ -95,6 +99,11 @@ export class OrderService {
                     { status: { $regex: searchQuery, $options: 'i' } },
                     { total: { $regex: searchQuery, $options: 'i' } },
                 ],
+            });
+
+            console.log({
+                count,
+                orders,
             });
 
             return { count, orders };
