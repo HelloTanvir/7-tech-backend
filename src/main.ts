@@ -9,9 +9,9 @@ async function bootstrap() {
     app.enableCors({
         origin: [
             'https://www.seventech.com.bd',
-            'http://localhost:3000',
-            'http://127.0.0.1:3000',
-            '*',
+            'www.seventech.com.bd',
+            'https://seventech.com.bd',
+            'seventech.com.bd',
         ],
     });
 
