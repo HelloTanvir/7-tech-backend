@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from '../product/schema';
@@ -65,10 +65,10 @@ export class OrderService {
     }
 
     async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
-        console.log({ searchQuery });
+        Logger.log({ searchQuery });
 
         if (searchQuery) {
-            console.log({
+            Logger.log({
                 original: searchQuery,
             });
 
@@ -101,7 +101,7 @@ export class OrderService {
                 ],
             });
 
-            console.log({
+            Logger.log({
                 count,
                 orders,
             });
