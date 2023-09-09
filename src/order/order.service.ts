@@ -67,7 +67,7 @@ export class OrderService {
     async findAll(page: number, size: number, searchQuery: string): Promise<AllOrdersResponse> {
         if (searchQuery) {
             const queryMatchOptions = [
-                { _id: { $regex: searchQuery, $options: 'i' } },
+                // { _id: { $regex: searchQuery, $options: 'i' } },
                 { customer_name: { $regex: searchQuery, $options: 'i' } },
                 { customer_number: { $regex: searchQuery, $options: 'i' } },
                 { address: { $regex: searchQuery, $options: 'i' } },
