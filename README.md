@@ -1,73 +1,69 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="https://www.seventech.com.bd" target="blank"><img src="public/logo.png" width="320" alt="SevenTech Logo" /></a>
 </p>
+<h2 align="center">
+Welcome to SevenTech GitHub
+</h2>
+<h3 align="center">
+  Your Ultimate Destination for ReDragon Computers and Electronics Parts.
+</h3>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to SevenTech - your one-stop ecommerce platform for all your ReDragon computers and electronics parts needs. At SevenTech, we strive to provide our customers with the latest and top-of-the-line ReDragon products and a wide range of electronics parts, ensuring a seamless shopping experience.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [About Us](https://www.seventech.com.bd/about)
+- [Privacy Policy](https://www.seventech.com.bd/about/privacy)
+- [Installation](https://nextjs.org/docs/getting-started/installation)
+- [Usage](https://www.seventech.com.bd)
+- [Contact Us](https://www.facebook.com/rdragonbd)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Other Repos
+- [Frontend](https://github.com/mohammadaahnaaf/seventech)
+
+## About Us
+
+SevenTech is a dedicated ecommerce platform focusing on providing high-quality ReDragon computers and a variety of electronics parts. We are committed to delivering top-notch products to our customers and ensuring a seamless and enjoyable shopping experience.
+
+Visit our website: [www.seventech.com.bd](https://www.seventech.com.bd)
+
+## Services
+
+At SevenTech, we offer a range of services to meet your technology needs:
+
+- **ReDragon Computers**: Explore our wide selection of ReDragon computers, known for their performance and durability.
+- **Electronics Parts**: Find a diverse range of electronics parts to suit your projects and requirements.
 
 ## Installation
 
-```bash
-$ npm install
-```
+As an ecommerce platform, SevenTech doesn't require any installation. Simply visit our website [www.seventech.com.bd](https://www.seventech.com.bd) and start browsing and shopping!
 
-## Running the app
+## Usage
 
-```bash
-# development
-$ npm run start
+1. **Browsing Products**:
+   - Visit our website [www.seventech.com.bd](https://www.seventech.com.bd).
+   - Browse through our extensive collection of ReDragon computers and electronics parts.
 
-# watch mode
-$ npm run start:dev
+2. **Making a Purchase**:
+   - Select the products you wish to purchase.
+   - Add them to your cart and proceed to checkout.
+   - Provide the necessary information and complete the purchase securely.
 
-# production mode
-$ npm run start:prod
-```
+3. **Contacting Us**:
+   - If you have any questions, concerns, or inquiries, feel free to reach out to us through our [Contact Us](#contact-us) section.
 
-## Test
+## Developers
+- [Mohammed | Frontend](https://github.com/mohammadaahnaaf)
+- [Tanvir | Backend](https://github.com/HelloTanvir)
 
-```bash
-# unit tests
-$ npm run test
+## Contact Us
 
-# e2e tests
-$ npm run test:e2e
+If you have any questions, concerns, or need assistance, you can reach out to us:
 
-# test coverage
-$ npm run test:cov
-```
+- **Email**: info@seventech.com.bd
+- **Phone**: +8801911444466
+- **Address**: Level-5/39, Kazi Bhaban, New Elephant Road, Dhaka-1205, Bangladesh.
 
-## Support
+We value your feedback and are here to assist you in any way we can. Your satisfaction is our priority.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Thank you for choosing SevenTech! Happy shopping!
