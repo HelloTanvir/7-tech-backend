@@ -1,8 +1,8 @@
 {
-  "name": "isti-bazar-backend",
+  "name": "7tech-backend",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "tanvir",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -21,14 +21,15 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^9.0.11",
-    "@nestjs/config": "^2.2.0",
-    "@nestjs/core": "^9.0.11",
+    "@nestjs/common": "^10.2.9",
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/core": "^10.2.9",
     "@nestjs/jwt": "^9.0.0",
+    "@nestjs/mapped-types": "^2.0.4",
     "@nestjs/mongoose": "^9.2.0",
-    "@nestjs/passport": "^9.0.0",
+    "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^9.0.11",
-    "@nestjs/swagger": "^6.1.0",
+    "@nestjs/swagger": "^7.1.16",
     "aws-sdk": "^2.1204.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",

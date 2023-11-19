@@ -12,6 +12,12 @@ async function bootstrap() {
             'www.seventech.com.bd',
             'https://seventech.com.bd',
             'seventech.com.bd',
+            'https://7tech.vercel.app',
+            '7tech.vercel.app',
+            'http://localhost:3000',
+            'localhost:3000',
+            'www.localhost:3000',
+            'www.7tech.vercel.app',
         ],
     });
 
